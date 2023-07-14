@@ -15,12 +15,18 @@ class Profile(models.Model):
 
 class Game(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, editable = False, unique_for_date="month")
-    month = models.DateField("Round of", default = get_current_month, editable=False)
+    month = models.DateField("Round of", default = get_current_month, editable=False, blank=True)
     
 
     
 class Transaction(models.Model):
+    transaction_types=[
+        ("NEW", "Start a new game"),
+        ("BUY", "Buy"),
+        ("SELL", "Sell")
+    ]
     game = models.ForeignKey(Game, on_delete=models.CASCADE, editable=False)
     ticker = models.CharField(max_length=10, blank=True, editable=False)
     unitprice = models.DecimalField(decimal_places=2, editable=False)
     quantity = models.IntegerField(editable=False)
+    type = models.CharField(max_length=4,choices = transaction_types)
