@@ -8,7 +8,7 @@ def get_current_month():
 
 # Create your models here.
 class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True, editable=False)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     
     def __str__(self):
         return self.user.username
@@ -27,6 +27,6 @@ class Transaction(models.Model):
     ]
     game = models.ForeignKey(Game, on_delete=models.CASCADE, editable=False)
     ticker = models.CharField(max_length=10, blank=True, editable=False)
-    unitprice = models.DecimalField(decimal_places=2, editable=False)
+    unitprice = models.DecimalField(max_digits=10,decimal_places=2, editable=False)
     quantity = models.IntegerField(editable=False)
     type = models.CharField(max_length=4,choices = transaction_types)
