@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse, Http404
+from api.serializer import MyTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 import yfinance as yf 
 import json
 
@@ -9,6 +11,9 @@ def stockDetails(request, slug):
     ticker = yf.Ticker(slug)
     try:
         df = ticker.history(period='1w',interval='1m')
-        return JsonResponse(json.loads(df.to_json()), safe=False)
+        return JsonResponse(ticker.info, safe=False)
     except:
-        raise JsonResponse('Stock ticker provided does not exist',status=404)
+        return JsonResponse({"message": 'Stock ticker provided does not exist'}, status=404)
+    
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
