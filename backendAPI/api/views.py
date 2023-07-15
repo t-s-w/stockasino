@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse, Http404
-from api.serializer import MyTokenObtainPairSerializer
+from api.serializer import LoginTokenPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 import yfinance as yf 
 import json
@@ -15,5 +15,5 @@ def stockDetails(request, slug):
     except:
         return JsonResponse({"message": 'Stock ticker provided does not exist'}, status=404)
     
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
+class LoginTokenPairView(TokenObtainPairView):
+    serializer_class = LoginTokenPairSerializer
