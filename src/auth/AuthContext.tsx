@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { LoginInfo, TokenPair } from "../utils/types";
 import { APIURL } from "../utils/constants";
+import jwt_decode from 'jwt-decode';
 
 const AuthContext = createContext({});
 
@@ -23,7 +24,10 @@ export function AuthProvider({ children }) {
         })
         if (response.ok) {
             const data = await response.json()
-            console.log(data)
+            const tokens = data as TokenPair
+            setAuthTokens(tokens)
+            const user = jwt_decode(tokens.access)
+            setUser(user.username)
         }
         else if (response.status === 401) {
             throw Error("Invalid credentials!")

@@ -2,6 +2,6 @@ import AuthContext from "../auth/AuthContext"
 import { useContext } from "react"
 
 export default function HomePage() {
-    const { username } = useContext(AuthContext);
-    return <h1>Hello, {username}</h1>
+    const { user } = useContext(AuthContext);
+    return <h1>Hello, {user}</h1>
 }
