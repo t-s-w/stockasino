@@ -1,8 +1,10 @@
 import React, { useContext } from "react"
 import AuthContext from "../auth/AuthContext"
 import { LoginFormElement, LoginInfo } from "../utils/types";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+    const navigate = useNavigate()
     const { login } = useContext(AuthContext)
 
     async function handleSubmit(evt: React.FormEvent<HTMLFormElement>) {
@@ -14,6 +16,7 @@ export default function Login() {
         } as LoginInfo
         try {
             await login(credentials)
+            navigate('/')
         }
         catch (err) {
             if (err instanceof Error) {
