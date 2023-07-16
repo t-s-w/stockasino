@@ -6,6 +6,6 @@ export default function HomePage() {
     const { user } = useContext(AuthContext);
     return <>
         <PrivateRoute />
-        <h1>Hello, {user}</h1>
+        <h1>Hello, {user.username}</h1>
     </>
 }

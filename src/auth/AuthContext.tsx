@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { LoginInfo, TokenPair } from "../utils/types";
 import { APIURL } from "../utils/constants";
 import jwt_decode from 'jwt-decode';
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext({});
 
@@ -10,9 +11,12 @@ export default AuthContext
 
 
 export function AuthProvider({ children }) {
-
-    const [user, setUser] = useState('')
-    const [authTokens, setAuthTokens] = useState({} as TokenPair)
+    const navigate = useNavigate();
+    const storage = localStorage.getItem('tokens')
+    const storedTokens = storage ? JSON.parse(storage) as TokenPair : null
+    const [authTokens, setAuthTokens] = useState(storedTokens)
+    const decoded = storedTokens.access ? jwt_decode(storedTokens.access) : null
+    const [user, setUser] = useState(decoded)
 
     async function login(credentials: LoginInfo) {
         const response = await fetch(APIURL + "api/auth/login", {
@@ -25,15 +29,21 @@ export function AuthProvider({ children }) {
         if (response.ok) {
             const data = await response.json()
             const tokens = data as TokenPair
-            localStorage.setItem('access', tokens.access)
-            localStorage.setItem('refresh', tokens.refresh)
+            localStorage.setItem('tokens', JSON.stringify(tokens))
             setAuthTokens(tokens)
             const user = jwt_decode(tokens.access)
-            setUser(user.username)
+            setUser(user)
         }
         else if (response.status === 401) {
             throw Error("Invalid credentials!")
         }
+    }
+
+    function logout() {
+        setUser(null)
+        setAuthTokens(null)
+        localStorage.removeItem('authTokens')
+        navigate('/')
     }
 
     const contextData = {
@@ -41,7 +51,8 @@ export function AuthProvider({ children }) {
         setUser,
         authTokens,
         setAuthTokens,
-        login
+        login,
+        logout
     }
 
     return <AuthContext.Provider value={contextData}>
