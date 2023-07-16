@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
             const responseJSON = await sendRequest(APIURL + 'auth/login', 'POST', credentials)
             const tokens = responseJSON as TokenPair
             localStorage.setItem('tokens', JSON.stringify(tokens))
-            setAuthTokens(tokens)
+            setTokens(tokens)
             const user = jwt_decode(tokens.access)
             setUser(user)
         }
@@ -46,16 +46,16 @@ export function AuthProvider({ children }) {
 
     function logout() {
         setUser(null)
-        setAuthTokens(null)
+        setTokens(null)
         localStorage.removeItem('authTokens')
-        navigate('/')
+        navigate('/login')
     }
 
     const contextData = {
         user,
         setUser,
-        authTokens,
-        setAuthTokens,
+        tokens,
+        setTokens,
         login,
         logout
     }
