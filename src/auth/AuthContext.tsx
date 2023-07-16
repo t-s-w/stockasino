@@ -25,6 +25,8 @@ export function AuthProvider({ children }) {
         if (response.ok) {
             const data = await response.json()
             const tokens = data as TokenPair
+            localStorage.setItem('access', tokens.access)
+            localStorage.setItem('refresh', tokens.refresh)
             setAuthTokens(tokens)
             const user = jwt_decode(tokens.access)
             setUser(user.username)
