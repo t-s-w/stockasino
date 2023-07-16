@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { LoginInfo } from "../utils/types";
+import { LoginInfo, TokenPair } from "../utils/types";
 import { APIURL } from "../utils/constants";
 
 const AuthContext = createContext({});
@@ -11,10 +11,10 @@ export default AuthContext
 export function AuthProvider({ children }) {
 
     const [user, setUser] = useState('')
-    const [authTokens, setAuthTokens] = useState({})
+    const [authTokens, setAuthTokens] = useState({} as TokenPair)
 
     async function login(credentials: LoginInfo) {
-        const response = await fetch(APIURL + "api/login", {
+        const response = await fetch(APIURL + "api/auth/login", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -24,6 +24,9 @@ export function AuthProvider({ children }) {
         if (response.ok) {
             const data = await response.json()
             console.log(data)
+        }
+        else if (response.status === 401) {
+            throw Error("Invalid credentials!")
         }
     }
 
