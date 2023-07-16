@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+# SimpleJWT tutorial from https://sushil-kamble.medium.com/django-rest-framework-react-authentication-workflow-2022-part-1-a21f22b3f358
 
 INSTALLED_APPS = [
     'api',  
@@ -63,8 +64,8 @@ MIDDLEWARE = [
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
 ]
 
 ROOT_URLCONF = 'backendAPI.urls'
