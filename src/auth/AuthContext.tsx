@@ -25,8 +25,22 @@ export function AuthProvider({ children }) {
     const storage = localStorage.getItem('tokens')
     const storedTokens = parseNull(storage) as TokenPair | null
     const [tokens, setTokens] = useState(storedTokens)
-    const decoded = tokens ? parseNull(tokens.access) as Token | null : null
+    const decoded = storedTokens ? jwt_decode(storedTokens.access) as Token | null : null
     const [user, setUser] = useState(decoded);
+    const expired = decoded?.exp ? decoded.exp * 1000 < (new Date()).valueOf() : false
+
+    useEffect(
+        () => {
+            if(expired) {
+            try {
+                refresh(storedTokens.refresh).catch(logout)
+            } catch{
+                logout()
+            }
+        }
+    }
+    ,[])
+
 
     async function login(credentials: LoginInfo) {
         try {
@@ -44,10 +58,26 @@ export function AuthProvider({ children }) {
         }
     }
 
+    async function refresh(refresh: string) {
+        try {
+            const responseJSON = await sendRequest(APIURL + 'auth/refresh', 'POST', {refresh})
+            const tokens = responseJSON as TokenPair
+            localStorage.setItem('tokens',JSON.stringify(tokens))
+            setTokens(tokens)
+            const user = jwt_decode(tokens.access)
+            setUser(user)
+        }
+        catch(err) {
+            if (err instanceof Error) {
+                throw new Error(err.message)
+            }
+        }
+    }
+
     function logout() {
         setUser(null)
         setTokens(null)
-        localStorage.removeItem('authTokens')
+        localStorage.removeItem('tokens')
         navigate('/login')
     }
 

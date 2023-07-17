@@ -21,3 +21,12 @@ export interface Token {
     user_id: number,
     username: string
 }
+
+export interface FetchOptions {
+    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    headers?: {
+        "Content-Type"?: string,
+        Authorization?: string
+    },
+    body?: Object
+}
