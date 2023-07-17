@@ -1,7 +1,11 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import AuthContext from "../auth/AuthContext";
+import { useContext } from "react";
+import { ModelError } from "../utils/types";
 
 export default function SignupPage() {
+  const { signup } = useContext(AuthContext);
   return (
     <Formik
       initialValues={{
@@ -34,11 +38,20 @@ export default function SignupPage() {
           }
         ),
       })}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
+      onSubmit={async (values, { setSubmitting, setErrors }) => {
+        try {
+          await signup({
+            username: values.username,
+            password: values.password,
+            email: values.email,
+          });
+        } catch (err) {
+          if (err instanceof ModelError) {
+            setErrors(err.body);
+          }
+        } finally {
           setSubmitting(false);
-        }, 400);
+        }
       }}
     >
       {({ isSubmitting, isValid }) => (

@@ -1,5 +1,12 @@
 import { createContext, useState, useEffect } from "react";
-import { LoginInfo, Token, TokenPair } from "../utils/types";
+import {
+  APIError,
+  LoginError,
+  LoginInfo,
+  ModelError,
+  Token,
+  TokenPair,
+} from "../utils/types";
 import { APIURL } from "../utils/constants";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
@@ -54,8 +61,8 @@ export function AuthProvider({ children }) {
       const user = jwt_decode(tokens.access);
       setUser(user);
     } catch (err) {
-      if (err instanceof Error) {
-        throw new Error(err.message);
+      if (err instanceof APIError) {
+        throw new LoginError(err.body.detail);
       }
     }
   }
@@ -71,8 +78,8 @@ export function AuthProvider({ children }) {
       const user = jwt_decode(tokens.access);
       setUser(user);
     } catch (err) {
-      if (err instanceof Error) {
-        throw new Error(err.message);
+      if (err instanceof APIError) {
+        throw new Error(err.body.detail);
       }
     }
   }
@@ -94,8 +101,10 @@ export function AuthProvider({ children }) {
       const user = jwt_decode(tokens.access);
       setUser(user);
     } catch (err) {
-      if (err instanceof Error) {
-        throw new Error(err.message);
+      if (err instanceof APIError) {
+        throw new ModelError(err.status, err.body);
+      } else {
+        console.log(err);
       }
     }
   }
@@ -114,6 +123,7 @@ export function AuthProvider({ children }) {
     setTokens,
     login,
     logout,
+    signup,
   };
 
   return (
