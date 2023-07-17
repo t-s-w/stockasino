@@ -49,6 +49,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function login(credentials: LoginInfo) {
+    credentials.username = credentials.username.toLowerCase();
     try {
       const responseJSON = await sendRequest(
         APIURL + "auth/login",
@@ -58,7 +59,7 @@ export function AuthProvider({ children }) {
       const tokens = responseJSON as TokenPair;
       localStorage.setItem("tokens", JSON.stringify(tokens));
       setTokens(tokens);
-      const user = jwt_decode(tokens.access);
+      const user = jwt_decode(tokens.access) as Token;
       setUser(user);
     } catch (err) {
       if (err instanceof APIError) {
@@ -75,7 +76,7 @@ export function AuthProvider({ children }) {
       const tokens = responseJSON as TokenPair;
       localStorage.setItem("tokens", JSON.stringify(tokens));
       setTokens(tokens);
-      const user = jwt_decode(tokens.access);
+      const user = jwt_decode(tokens.access) as Token;
       setUser(user);
     } catch (err) {
       if (err instanceof APIError) {
@@ -89,6 +90,7 @@ export function AuthProvider({ children }) {
     email: string;
     password: string;
   }) {
+    signupInfo.username = signupInfo.username.toLowerCase();
     try {
       const responseJSON = await sendRequest(
         APIURL + "auth/signup",
@@ -98,7 +100,7 @@ export function AuthProvider({ children }) {
       const tokens = responseJSON as TokenPair;
       localStorage.setItem("tokens", JSON.stringify(tokens));
       setTokens(tokens);
-      const user = jwt_decode(tokens.access);
+      const user = jwt_decode(tokens.access) as Token;
       setUser(user);
     } catch (err) {
       if (err instanceof APIError) {
