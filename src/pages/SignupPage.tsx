@@ -35,7 +35,7 @@ export default function SignupPage() {
   });
 
   return (
-    <>
+    <div className="w-50 mx-auto">
       <h1 className="mb-5">Sign up</h1>
       <Formik
         initialValues={{
@@ -70,10 +70,10 @@ export default function SignupPage() {
           isSubmitting,
           isValid,
         }) => (
-          <Form noValidate onSubmit={handleSubmit}>
+          <Form noValidate onSubmit={handleSubmit} className="mx-auto ">
             <fieldset disabled={isSubmitting}>
-              <div className="row g-2 input-group has-validation w-50">
-                <div className="col-md w-50">
+              <div className="row g-2 input-group has-validation">
+                <div className="col-md">
                   <FloatingLabel controlId="username" label="Username">
                     <Form.Control
                       placeholder="Username"
@@ -93,8 +93,8 @@ export default function SignupPage() {
                 </div>
               </div>
 
-              <div className="row g-2 input-group has-validation w-50">
-                <div className="col-md w-50">
+              <div className="row g-2 input-group has-validation">
+                <div className="col-md">
                   <FloatingLabel controlId="email" label="Email address">
                     <Form.Control
                       onChange={handleChange}
@@ -114,8 +114,8 @@ export default function SignupPage() {
                 </div>
               </div>
 
-              <div className="row g-2 input-group has-validation w-50">
-                <div className="col-md w-50">
+              <div className="row g-2 input-group has-validation">
+                <div className="col-md">
                   <FloatingLabel controlId="password" label="Password">
                     <Form.Control
                       onChange={handleChange}
@@ -135,8 +135,8 @@ export default function SignupPage() {
                 </div>
               </div>
 
-              <div className="row g-2 input-group has-validation w-50">
-                <div className="col-md w-50">
+              <div className="row g-2 input-group has-validation">
+                <div className="col-md">
                   <FloatingLabel
                     controlId="confirmPassword"
                     label="Confirm Password"
@@ -161,7 +161,7 @@ export default function SignupPage() {
 
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="mt-3 btn btn-primary"
                 disabled={isSubmitting || !isValid}
               >
                 Submit
@@ -170,6 +170,6 @@ export default function SignupPage() {
           </Form>
         )}
       </Formik>
-    </>
+    </div>
   );
 }

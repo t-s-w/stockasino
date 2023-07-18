@@ -5,16 +5,19 @@ import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./auth/AuthContext";
 import SignupPage from "./pages/SignupPage";
 import NavBar from "./components/NavBar";
+import { Container } from "react-bootstrap";
 
 function App() {
   return (
     <AuthProvider>
       <NavBar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-      </Routes>
+      <Container className="p-3">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+        </Routes>
+      </Container>
     </AuthProvider>
   );
 }
