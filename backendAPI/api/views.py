@@ -12,6 +12,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 # Create your views here.
 
 def stockDetails(request, slug):
+    slug = slug.replace("_",".")
     ticker = yf.Ticker(slug)
     try:
         df = ticker.history(period='1w',interval='1m')
