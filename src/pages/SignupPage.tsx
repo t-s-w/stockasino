@@ -1,13 +1,16 @@
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AuthContext from "../auth/AuthContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ModelError } from "../utils/types";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
+import { useNavigate } from "react-router-dom";
 
 export default function SignupPage() {
+  const navigate = useNavigate();
   const { signup } = useContext(AuthContext);
+  const [successMsg, setSuccessMsg] = useState(null);
 
   const signupSchema = Yup.object({
     username: Yup.string()
@@ -52,6 +55,10 @@ export default function SignupPage() {
               password: values.password,
               email: values.email,
             });
+            setSuccessMsg(
+              "Signed up successfully! Returning you to the home page soon..."
+            );
+            setTimeout(() => navigate("/"), 2000);
           } catch (err) {
             if (err instanceof ModelError) {
               setErrors(err.body);
@@ -170,6 +177,7 @@ export default function SignupPage() {
           </Form>
         )}
       </Formik>
+      <p style={{ color: "var(--bs-success)" }}>{successMsg}</p>
     </div>
   );
 }
