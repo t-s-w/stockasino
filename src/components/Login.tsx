@@ -1,39 +1,71 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import AuthContext from "../auth/AuthContext";
-import { LoginFormElement, LoginInfo } from "../utils/types";
+import { LoginError } from "../utils/types";
 import { useNavigate } from "react-router-dom";
-import { NavDropdown } from "react-bootstrap";
+import { Col, Form, NavDropdown, Nav } from "react-bootstrap";
+import { Formik } from "formik";
+import { useState } from "react";
 
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-
-  async function handleSubmit(evt: React.FormEvent<HTMLFormElement>) {
-    evt.preventDefault();
-    const form = evt.target as LoginFormElement;
-    const credentials = {
-      username: form.username.value,
-      password: form.password.value,
-    } as LoginInfo;
-    try {
-      await login(credentials);
-      navigate("/");
-    } catch (err) {
-      if (err instanceof Error) {
-        console.log(err.message);
-      }
-    }
-  }
+  const [buttonText, setButtonText] = useState("Log in");
+  const [buttonClass, setButtonClass] = useState("btn-dark");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [success, setSuccess] = useState(false);
 
   return (
-    <NavDropdown title="Login">
-      <form onSubmit={(evt) => void handleSubmit(evt)}>
-        <fieldset>
-          <input name="username" type="text" />
-          <input name="password" type="password" />
-          <button>Log in!</button>
-        </fieldset>
-      </form>
-    </NavDropdown>
+    <Nav variant="underline">
+      <NavDropdown title="Login" drop="down-centered">
+        <Formik
+          initialValues={{
+            username: "",
+            password: "",
+          }}
+          onSubmit={async (values, { setSubmitting }) => {
+            try {
+              await login(values);
+              setButtonClass("btn-success");
+              setButtonText("Success!");
+              setSuccess(true);
+            } catch (err) {
+              if (err instanceof LoginError) {
+                setErrorMsg(err.message);
+              }
+            } finally {
+              setSubmitting(false);
+            }
+          }}
+        >
+          {({ handleSubmit, isSubmitting, handleChange }) => (
+            <Form onSubmit={handleSubmit}>
+              <fieldset disabled={isSubmitting || success}>
+                <Col className="d-flex flex-column align-items-center p-2">
+                  <Form.Control
+                    onChange={handleChange}
+                    id="username"
+                    className="mb-1"
+                    placeholder="Username"
+                  />
+                  <Form.Control
+                    onChange={handleChange}
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+                  />
+                  <button className={"mt-4 btn " + buttonClass} type="submit">
+                    {buttonText}
+                  </button>
+                  <p style={{ color: "var(--bs-danger)" }}>{errorMsg}</p>
+                </Col>
+              </fieldset>
+            </Form>
+          )}
+        </Formik>
+      </NavDropdown>
+      <Nav.Item>
+        <Nav.Link onClick={() => navigate("/signup")}>Sign Up</Nav.Link>
+      </Nav.Item>
+    </Nav>
   );
 }

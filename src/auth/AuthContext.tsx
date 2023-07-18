@@ -60,7 +60,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem("tokens", JSON.stringify(tokens));
       setTokens(tokens);
       const user = jwt_decode(tokens.access) as Token;
-      setUser(user);
+      setTimeout(() => setUser(user), 2000);
     } catch (err) {
       if (err instanceof APIError) {
         throw new LoginError(err.body.detail);
@@ -101,7 +101,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem("tokens", JSON.stringify(tokens));
       setTokens(tokens);
       const user = jwt_decode(tokens.access) as Token;
-      setUser(user);
+      setTimeout(() => setUser(user), 2000);
     } catch (err) {
       if (err instanceof APIError) {
         throw new ModelError(err.status, err.body);
