@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Container, Spinner } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import sendRequest from "../utils/sendRequest";
 import { APIURL } from "../utils/constants";
+import StockInfo from "../components/StockInfo";
 
 export default function ViewTickerPage() {
   const { slug } = useParams();
@@ -28,7 +29,11 @@ export default function ViewTickerPage() {
   return (
     <Loading loading={loading}>
       <Container className="p-3">
-        {!stockInfo ? <h1>Invalid ticker!</h1> : <h1>{stockInfo.symbol}</h1>}
+        {!stockInfo ? (
+          <h1>Invalid ticker!</h1>
+        ) : (
+          <StockInfo stockInfo={stockInfo} />
+        )}
       </Container>
     </Loading>
   );
