@@ -1,3 +1,5 @@
+import { NumberSchema } from "yup";
+
 export interface LoginInfo {
   username: string;
   password: string;
@@ -68,6 +70,24 @@ export interface StockInfo {
   previousClose: number;
   dayLow: number;
   dayHigh: number;
+  open: number;
+  bid: number;
+  ask: number;
+  bidSize: number;
+  askSize: number;
+  fiftyTwoWeekLow: number;
+  fiftyTwoWeekHigh: number;
+  volume: number;
+  averageVolume: number;
+  marketCap: number;
+  beta: number;
+  trailingPE: number;
+  trailingEps: number;
+  dividendRate: number;
+  dividendYield: number;
+  currentPrice: number;
+  exDividendDate: number;
+  targetMeanPrice: number;
 }
 
 export interface StockInfoParser {

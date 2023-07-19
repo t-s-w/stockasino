@@ -1,12 +1,18 @@
 import { diff } from "../utils/functions";
 import { Container, Row, Col, Tab, Tabs } from "react-bootstrap";
 import StockSummary from "./StockSummary";
+import { StockInfo as StockInformation } from "../utils/types";
 
-export default function StockInfo({ stockInfo }) {
+type Props = {
+  stockInfo: StockInformation;
+};
+
+export default function StockInfo(props: Props) {
+  const { stockInfo } = props;
   const fontColour =
-    stockInfo.ask > stockInfo.previousClose
+    stockInfo.currentPrice > stockInfo.previousClose
       ? "text-success"
-      : stockInfo.ask < stockInfo.previousClose
+      : stockInfo.currentPrice < stockInfo.previousClose
       ? "text-danger"
       : "";
 
@@ -21,7 +27,7 @@ export default function StockInfo({ stockInfo }) {
       <Container className="mt-3">
         <Row>
           <Col md={2}>
-            <span className="fw-bold fs-1">{stockInfo.ask}</span>
+            <span className="fw-bold fs-1">{stockInfo.currentPrice}</span>
           </Col>
           <Col md={1} className="pt-2 flex flex-row align-items-center">
             <span className={"text-end fw-semibold " + fontColour}>
