@@ -1,7 +1,8 @@
 import { diff } from "../utils/functions";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Tab, Tabs } from "react-bootstrap";
+import StockSummary from "./StockSummary";
 
-export default function stockInfo({ stockInfo }) {
+export default function StockInfo({ stockInfo }) {
   const fontColour =
     stockInfo.ask > stockInfo.previousClose
       ? "text-success"
@@ -37,6 +38,14 @@ export default function stockInfo({ stockInfo }) {
           </p>
         </Row>
       </Container>
+      <Tabs defaultActiveKey="summary" id="stockInfo">
+        <Tab eventKey="summary" title="Summary">
+          <StockSummary stockInfo={stockInfo} />
+        </Tab>
+        <Tab eventKey="graph" title="Graph">
+          test2
+        </Tab>
+      </Tabs>
     </>
   );
 }

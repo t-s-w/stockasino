@@ -63,3 +63,15 @@ export class LoginError extends Error {
     super(msg);
   }
 }
+
+export interface StockInfo {
+  previousClose: number;
+  dayLow: number;
+  dayHigh: number;
+}
+
+export interface StockInfoParser {
+  name: string;
+  condition: (stockInfo: StockInfo) => boolean;
+  value: (stockInfo: StockInfo) => string;
+}
