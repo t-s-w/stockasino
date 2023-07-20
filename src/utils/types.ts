@@ -91,6 +91,7 @@ export interface StockInfoParser {
 export interface Game {
   month: Date;
   currentBalance: number;
+  id: number;
 }
 
 export interface User {

@@ -36,11 +36,11 @@ export function AuthProvider({ children }) {
     ? (jwt_decode(storedTokens.access) as Token)
     : null;
   const userInfo = { game: undefined, username: "" } as User;
-  console.log(decoded);
   if (decoded?.username) {
     userInfo.username = decoded.username;
     if (decoded?.game) {
       userInfo.game = decoded.game;
+      userInfo.game.id = parseInt(decoded.game.id);
       userInfo.game.month = new Date(decoded.game.month);
       userInfo.game.currentBalance = parseFloat(decoded.game.currentBalance);
       userInfo.username = decoded.username;

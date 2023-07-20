@@ -16,7 +16,7 @@ export default function StockInfo(props: Props) {
       ? "text-danger"
       : "";
 
-  const diffs = diff(stockInfo.previousClose, stockInfo.ask);
+  const diffs = diff(stockInfo.previousClose, stockInfo.currentPrice);
 
   return (
     <>
