@@ -14,7 +14,7 @@ export default function UserCard() {
           <span>
             Logged in as
             <br />
-            {user.username}
+            <span className="fw-bold">{user.username}</span>
           </span>
         }
         drop="down-centered"

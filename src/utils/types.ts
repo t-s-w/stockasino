@@ -16,15 +16,6 @@ export interface TokenPair {
   refresh: string;
 }
 
-export interface Token {
-  token_type: string;
-  exp: number;
-  iat: number;
-  jti: string;
-  user_id: number;
-  username: string;
-}
-
 export interface FetchOptions {
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   headers?: {
@@ -104,8 +95,15 @@ export interface Game {
 
 export interface User {
   username: string;
-  id: number;
-  game: Game;
+  game: Game | undefined;
+}
+
+export interface Token extends User {
+  token_type: string;
+  exp: number;
+  iat: number;
+  jti: string;
+  user_id: number;
 }
 
 export interface AuthContextType {

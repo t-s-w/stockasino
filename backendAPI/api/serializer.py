@@ -50,7 +50,7 @@ class GameSerializer(ModelSerializer):
     
     class Meta:
         model = Game
-        fields = ('month', 'currentBalance')
+        fields = ('month', 'currentBalance', 'id')
 
     def create(self,user):
         return Game.objects.create(**user)
