@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { APIError, Game } from "../utils/types";
 import sendRequest from "../utils/sendRequest";
 import Loading from "../components/Loading";
-import { getCurrentMonth } from "../utils/functions";
 import { APIURL } from "../utils/constants";
 import GameCard from "../components/GameCard";
 
@@ -48,6 +47,14 @@ export default function UserGameListPage() {
     getGames();
   }, []);
 
+  const pastGames = games.filter((game) => {
+    const now = new Date();
+    return (
+      game.month.getMonth() !== now.getUTCMonth() ||
+      game.month.getUTCFullYear() !== now.getUTCFullYear()
+    );
+  });
+
   return (
     <>
       <PrivateRoute />
@@ -79,6 +86,13 @@ export default function UserGameListPage() {
             </div>
           )}
           <h2>Past Games</h2>
+          {pastGames.length > 0 ? (
+            pastGames.map((game) => (
+              <GameCard key={game.month.valueOf()} game={game} />
+            ))
+          ) : (
+            <Container>No past games to show.</Container>
+          )}
         </Container>
       </Loading>
     </>
