@@ -10,5 +10,6 @@ urlpatterns = [
     path('auth/refresh',TokenRefreshView.as_view()),
     path('auth/signup',views.SignupView.as_view()),
     path('games/',views.GamesView.as_view()),
-    path('transactions/',views.TransactionsView.as_view())
+    path('transactions/',views.TransactionsView.as_view()),
+    path('games/checkBalance', views.BalanceView.as_view())
 ]
