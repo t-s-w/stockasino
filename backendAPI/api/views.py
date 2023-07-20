@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.http import JsonResponse, Http404
-from api.serializer import LoginTokenPairSerializer, SignupSerializer
+from api.serializer import LoginTokenPairSerializer, SignupSerializer, GameSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 import yfinance as yf 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.views import APIView
+from .models import Game
 
 
 # Create your views here.
@@ -27,13 +29,16 @@ class LoginTokenPairView(TokenObtainPairView):
 class SignupView(generics.CreateAPIView):
     serializer_class = SignupSerializer
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def test(request):
-    if request.method == "GET":
-        return Response("ok")
+# Example of function view
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def test(request):
+#     if request.method == "GET":
+#         return Response("ok")
 
-@api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def StartGameView(request):
-    print(request.user.username)
+class GamesView(APIView):
+    def get(self, request, format=None):
+        games = Game.objects.all()
+        serializer = GameSerializer(games, many=True)
+        return Response(serializer.data)
