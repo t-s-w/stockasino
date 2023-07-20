@@ -16,8 +16,8 @@ class Profile(models.Model):
 class Game(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, editable = False, unique_for_date="month")
     month = models.DateField("Round of", default = get_current_month, editable=False, blank=True)
+    currentBalance = models.DecimalField("Balance", default = 1000000, editable=False, blank=True, decimal_places=2, max_digits=15)
     
-
     
 class Transaction(models.Model):
     transaction_types=[

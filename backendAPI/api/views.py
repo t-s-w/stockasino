@@ -32,3 +32,8 @@ class SignupView(generics.CreateAPIView):
 def test(request):
     if request.method == "GET":
         return Response("ok")
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def StartGameView(request):
+    print(request.user.username)
