@@ -14,10 +14,15 @@ class Profile(models.Model):
         return self.user.username
 
 class Game(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, editable = False, unique_for_date="month")
-    month = models.DateField("Round of", default = get_current_month, editable=False, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, editable = False)
+    month = models.DateField("Round of", blank=True)
     currentBalance = models.DecimalField("Balance", default = 1000000, blank=True, decimal_places=2, max_digits=15)
     ended = models.BooleanField("Ended", default=False)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user','month'],name="unique_game_per_user_per_month")
+        ]
 
     
 class Transaction(models.Model):

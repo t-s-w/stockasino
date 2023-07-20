@@ -8,8 +8,13 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
-from .models import Game
+from .models import Game, Transaction
+import datetime
 
+
+def get_current_month():
+    now = datetime.datetime.now()
+    return datetime.date(now.year,now.month,1)
 
 # Create your views here.
 
@@ -39,6 +44,12 @@ class SignupView(generics.CreateAPIView):
 @permission_classes([IsAuthenticated])
 class GamesView(APIView):
     def get(self, request, format=None):
-        games = Game.objects.all()
+        games = Game.objects.filter(user=request.user)
         serializer = GameSerializer(games, many=True)
+        return Response(serializer.data)
+    
+    def post(self,request, format=None):
+        newgame = Game.objects.create(user=request.user, month=get_current_month())
+        firsttransaction = Transaction.objects.create(game=newgame,unitprice=1000000,quantity=1, type="NEW")
+        serializer = GameSerializer(newgame)
         return Response(serializer.data)
