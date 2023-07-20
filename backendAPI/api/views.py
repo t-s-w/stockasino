@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.utils import IntegrityError
 from django.http import JsonResponse, Http404
 from api.serializer import LoginTokenPairSerializer, SignupSerializer, GameSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -49,7 +50,11 @@ class GamesView(APIView):
         return Response(serializer.data)
     
     def post(self,request, format=None):
-        newgame = Game.objects.create(user=request.user, month=get_current_month())
-        firsttransaction = Transaction.objects.create(game=newgame,unitprice=1000000,quantity=1, type="NEW")
-        serializer = GameSerializer(newgame)
-        return Response(serializer.data)
+        try:
+            newgame = Game.objects.create(user=request.user, month=get_current_month())
+        except IntegrityError:
+            return Response({"detail":"Game exists for this month and user!"},status=status.HTTP_400_BAD_REQUEST)
+        else:
+            firsttransaction = Transaction.objects.create(game=newgame,unitprice=1000000,quantity=1, type="NEW")
+            serializer = GameSerializer(newgame)
+            return Response(serializer.data)
