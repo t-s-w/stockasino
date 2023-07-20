@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.db.utils import IntegrityError
 from django.http import JsonResponse, Http404
-from api.serializer import LoginTokenPairSerializer, SignupSerializer, GameSerializer
+from api.serializer import LoginTokenPairSerializer, SignupSerializer, GameSerializer, TransactionSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 import yfinance as yf 
 from rest_framework.response import Response
@@ -11,11 +11,12 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from .models import Game, Transaction
 import datetime
+from requests.exceptions import HTTPError
 
 
 def get_current_month():
     now = datetime.datetime.now()
-    return datetime.date(now.year,now.month,1)
+    return datetime.date(now.year,now.month,1) 
 
 # Create your views here.
 
@@ -58,3 +59,25 @@ class GamesView(APIView):
             firsttransaction = Transaction.objects.create(game=newgame,unitprice=1000000,quantity=1, type="NEW")
             serializer = GameSerializer(newgame)
             return Response(serializer.data)
+        
+@permission_classes([IsAuthenticated])
+class TransactionsView(APIView):
+    def post(self,request,format=None):
+        game = Game.objects.get(user=request.user,month=get_current_month())
+        if not request.user or not game or game.ended:
+            return Response({"detail":"No active game found for the current user!"},status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            ticker = yf.Ticker(request.data['ticker'])
+            tickerinfo = ticker.info
+            price = tickerinfo['currentPrice']
+        except HTTPError:
+            return Response({"detail": "Error fetching ticker info"},status=status.HTTP_404_NOT_FOUND)
+        else:
+            game.update_balance()
+            if request.data['type'] == "BUY" and price * request.data['quantity'] > game.currentBalance:
+                return Response({"detail":"Insufficient balance"}, status=status.HTTP_400_BAD_REQUEST)
+            transaction = Transaction.objects.create(game=game, unitprice=price, ticker=request.data['ticker'], quantity=request.data['quantity'],type=request.data['type'])
+            serializer = TransactionSerializer(transaction)
+            game.update_balance()
+            return Response(serializer.data)
+            

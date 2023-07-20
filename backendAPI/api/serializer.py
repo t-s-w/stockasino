@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User
-from .models import Profile, Game
+from .models import Profile, Game, Transaction
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.serializers import ModelSerializer
 import datetime
+
 
 def get_current_month():
     now = datetime.datetime.now()
@@ -54,3 +55,8 @@ class GameSerializer(ModelSerializer):
 
     def create(self,user):
         return Game.objects.create(**user)
+
+class TransactionSerializer(ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = ('game','quantity','unitprice','ticker','type')

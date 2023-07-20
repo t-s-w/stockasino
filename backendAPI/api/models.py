@@ -40,7 +40,7 @@ class Transaction(models.Model):
         ("SELL", "Sell")
     ]
     game = models.ForeignKey(Game, on_delete=models.CASCADE, editable=False)
-    ticker = models.CharField(max_length=10, blank=True, editable=False)
-    unitprice = models.DecimalField(max_digits=10,decimal_places=2, editable=False)
-    quantity = models.IntegerField(editable=False)
+    ticker = models.CharField(max_length=10, blank=True)
+    unitprice = models.DecimalField(max_digits=10,decimal_places=2)
+    quantity = models.IntegerField()
     type = models.CharField(max_length=4,choices = transaction_types)
