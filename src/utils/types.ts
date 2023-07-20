@@ -119,4 +119,5 @@ export interface AuthContextType {
   setToken: React.Dispatch<React.SetStateAction<Token | null>>;
   tokens: TokenPair | null;
   user: User | null;
+  refresh: (refresh: string) => Promise<void>;
 }

@@ -32,7 +32,7 @@ export default function ViewTickerPage() {
         {!stockInfo ? (
           <h1>Invalid ticker!</h1>
         ) : (
-          <StockInfo stockInfo={stockInfo} />
+          <StockInfo stockInfo={stockInfo} setLoading={setLoading} />
         )}
       </Container>
     </Loading>

@@ -27,6 +27,19 @@ function parseNull(jsonString: string | null) {
   }
 }
 
+function parseUserInfo(accessToken: string) {
+  if (!accessToken) return null;
+  const decoded = jwt_decode(accessToken);
+  if (!decoded) return null;
+  if (decoded.game && decoded.game.month && decoded.game.currentBalance) {
+    decoded.game.month = new Date(decoded.game?.month);
+    decoded.game.currentBalance = parseFloat(decoded.game.currentBalance);
+  } else {
+    decoded.game = undefined;
+  }
+  return decoded as User;
+}
+
 export function AuthProvider({ children }) {
   const navigate = useNavigate();
   const storage = localStorage.getItem("tokens");
@@ -35,17 +48,7 @@ export function AuthProvider({ children }) {
   const decoded = storedTokens
     ? (jwt_decode(storedTokens.access) as Token)
     : null;
-  const userInfo = { game: undefined, username: "" } as User;
-  if (decoded?.username) {
-    userInfo.username = decoded.username;
-    if (decoded?.game) {
-      userInfo.game = decoded.game;
-      userInfo.game.id = parseInt(decoded.game.id);
-      userInfo.game.month = new Date(decoded.game.month);
-      userInfo.game.currentBalance = parseFloat(decoded.game.currentBalance);
-      userInfo.username = decoded.username;
-    }
-  }
+  const userInfo = parseUserInfo(storedTokens?.access);
   const [user, setUser] = useState(userInfo);
   const expired = decoded?.exp
     ? decoded.exp * 1000 < new Date().valueOf()
@@ -72,7 +75,7 @@ export function AuthProvider({ children }) {
       const tokens = responseJSON as TokenPair;
       localStorage.setItem("tokens", JSON.stringify(tokens));
       setTokens(tokens);
-      const user = jwt_decode(tokens.access) as Token;
+      const user = parseUserInfo(tokens.access) as Token;
       setTimeout(() => setUser(user), 2000);
     } catch (err) {
       if (err instanceof APIError) {
@@ -89,7 +92,7 @@ export function AuthProvider({ children }) {
       const tokens = responseJSON as TokenPair;
       localStorage.setItem("tokens", JSON.stringify(tokens));
       setTokens(tokens);
-      const user = jwt_decode(tokens.access) as Token;
+      const user = parseUserInfo(tokens.access) as Token;
       setUser(user);
     } catch (err) {
       if (err instanceof APIError) {
@@ -139,6 +142,7 @@ export function AuthProvider({ children }) {
     login,
     logout,
     signup,
+    refresh,
   };
 
   return (

@@ -2,13 +2,19 @@ import { diff } from "../utils/functions";
 import { Container, Row, Col, Tab, Tabs } from "react-bootstrap";
 import StockSummary from "./StockSummary";
 import { StockInfo as StockInformation } from "../utils/types";
+import AuthContext from "../auth/AuthContext";
+import React, { useContext } from "react";
+import BuyStock from "./BuyStock";
 
 type Props = {
   stockInfo: StockInformation;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function StockInfo(props: Props) {
-  const { stockInfo } = props;
+  const { user } = useContext(AuthContext);
+
+  const { stockInfo, setLoading } = props;
   const fontColour =
     stockInfo.currentPrice > stockInfo.previousClose
       ? "text-success"
@@ -17,6 +23,11 @@ export default function StockInfo(props: Props) {
       : "";
 
   const diffs = diff(stockInfo.previousClose, stockInfo.currentPrice);
+  const maxBuyable =
+    user?.game?.currentBalance &&
+    user?.game?.currentBalance > stockInfo.currentPrice
+      ? Math.floor(user.game.currentBalance / stockInfo.currentPrice)
+      : 0;
 
   return (
     <>
@@ -24,25 +35,36 @@ export default function StockInfo(props: Props) {
         <span className="fw-bold">{stockInfo.symbol}</span>:{" "}
         {stockInfo.longName}
       </h3>
-      <Container className="mt-3">
-        <Row>
-          <Col md={2}>
-            <span className="fw-bold fs-1">{stockInfo.currentPrice}</span>
-          </Col>
-          <Col md={1} className="pt-2 flex flex-row align-items-center">
-            <span className={"text-end fw-semibold " + fontColour}>
-              <span>{diffs.diff}</span>
-              <br />
-              <span>({diffs.pctDiff})</span>
-            </span>
-          </Col>
-        </Row>
-        <Row sm="auto">
-          <p className="text-secondary fs-6">
-            From previous close:{" "}
-            <span className="fw-semibold">{stockInfo.previousClose}</span>
-          </p>
-        </Row>
+      <Container className="d-flex flex-row">
+        <Container className="mt-3 me-auto">
+          <Row>
+            <Col md="auto">
+              <span className="fw-bold fs-1">{stockInfo.currentPrice}</span>
+            </Col>
+            <Col className="pt-2 flex flex-row align-items-center me-auto">
+              <span className={" fw-semibold " + fontColour}>
+                <span>{diffs.diff}</span>
+                <br />
+                <span>({diffs.pctDiff})</span>
+              </span>
+            </Col>
+          </Row>
+          <Row sm="auto">
+            <p className="text-secondary fs-6">
+              From previous close:{" "}
+              <span className="fw-semibold">{stockInfo.previousClose}</span>
+            </p>
+          </Row>
+        </Container>
+        <Container>
+          {maxBuyable > 0 && (
+            <BuyStock
+              setLoading={setLoading}
+              maxBuyable={maxBuyable}
+              price={stockInfo.currentPrice}
+            />
+          )}
+        </Container>
       </Container>
       <Tabs defaultActiveKey="summary" id="stockInfo">
         <Tab eventKey="summary" title="Summary">

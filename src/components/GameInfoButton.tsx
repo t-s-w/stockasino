@@ -6,8 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function GameInfoButton() {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  console.log(user);
-  return user?.game ? (
+  return user?.game && user.game.month ? (
     <Nav.Item>
       <Nav.Link>
         <p className="mb-0">
