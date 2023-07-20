@@ -24,6 +24,14 @@ class Game(models.Model):
             models.UniqueConstraint(fields=['user','month'],name="unique_game_per_user_per_month")
         ]
 
+    def update_balance(self):
+        transactions = Transaction.objects.filter(game=self)
+        value = 0
+        for transaction in transactions:
+            value += (-1 if transaction.type == "BUY" else 1) * transaction.quantity * transaction.unitprice
+        self.currentBalance = value
+        self.save()   
+
     
 class Transaction(models.Model):
     transaction_types=[

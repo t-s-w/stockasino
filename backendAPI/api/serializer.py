@@ -5,12 +5,21 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.serializers import ModelSerializer
+import datetime
+
+def get_current_month():
+    now = datetime.datetime.now()
+    return datetime.date(now.year,now.month,1)
 
 class LoginTokenPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
+        currentGame = Game.objects.get(user=user,month=get_current_month())
         token = super().get_token(user)
         token['username'] = user.username
+        if currentGame:
+            currentGame.update_balance()
+            token['game'] = GameSerializer(currentGame).data
         return token
     
 class SignupSerializer(ModelSerializer):
