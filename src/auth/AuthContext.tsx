@@ -1,18 +1,20 @@
 import { createContext, useState, useEffect } from "react";
 import {
   APIError,
+  AuthContextType,
   LoginError,
   LoginInfo,
   ModelError,
   Token,
   TokenPair,
+  User,
 } from "../utils/types";
 import { APIURL } from "../utils/constants";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import sendRequest from "../utils/sendRequest";
 
-const AuthContext = createContext({});
+const AuthContext = createContext({} as AuthContextType);
 
 export default AuthContext;
 
@@ -31,7 +33,7 @@ export function AuthProvider({ children }) {
   const storedTokens = parseNull(storage) as TokenPair | null;
   const [tokens, setTokens] = useState(storedTokens);
   const decoded = storedTokens
-    ? (jwt_decode(storedTokens.access) as Token | null)
+    ? (jwt_decode(storedTokens.access) as Token | null as User)
     : null;
   const [user, setUser] = useState(decoded);
   const expired = decoded?.exp

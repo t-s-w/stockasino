@@ -7,13 +7,13 @@ import { APIURL } from "../utils/constants";
 
 export default function HomePage() {
   const { user, logout } = useContext(AuthContext);
-  return (
+  return user ? (
     <>
-      <h1>Hello, {user?.username}</h1>
+      <h1>Hello, {user.username}</h1>
       <Link to="" onClick={logout}>
         Log out
       </Link>
       <button onClick={() => sendRequest(APIURL + "test")}>test</button>
     </>
-  );
+  ) : null;
 }

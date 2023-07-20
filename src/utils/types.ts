@@ -1,3 +1,4 @@
+import React from "react";
 import { NumberSchema } from "yup";
 
 export interface LoginInfo {
@@ -99,4 +100,24 @@ export interface StockInfoParser {
 export interface Game {
   month: Date;
   currentBalance: number;
+}
+
+export interface User {
+  username: string;
+  id: number;
+  game: Game;
+}
+
+export interface AuthContextType {
+  login: (credentials: LoginInfo) => Promise<void>;
+  logout: () => void;
+  signup: (signupInfo: {
+    username: string;
+    password: string;
+    email: string;
+  }) => Promise<void>;
+  setTokens: React.Dispatch<React.SetStateAction<TokenPair | null>>;
+  setToken: React.Dispatch<React.SetStateAction<Token | null>>;
+  tokens: TokenPair | null;
+  user: User | null;
 }
