@@ -95,3 +95,8 @@ export interface StockInfoParser {
   condition: (stockInfo: StockInfo) => boolean;
   value: (stockInfo: StockInfo) => string;
 }
+
+export interface Game {
+  month: Date;
+  currentBalance: number;
+}

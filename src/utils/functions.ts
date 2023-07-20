@@ -10,3 +10,8 @@ export function diff(a, b) {
   const symbol = b - a < 0 ? "" : "+";
   return { diff: symbol + diffFormatted, pctDiff: symbol + pctDiff + "%" };
 }
+
+export function getCurrentMonth() {
+  const date = new Date();
+  return new Date(date.getFullYear(), date.getMonth());
+}
