@@ -1,4 +1,4 @@
-import { Accordion } from "react-bootstrap";
+import { Accordion, Col } from "react-bootstrap";
 import { Transaction } from "../utils/types";
 import Holdings from "../utils/Holdings";
 import { diff } from "../utils/functions";
@@ -24,13 +24,18 @@ export default function Portfolio(props: Props) {
         <Accordion.Header>
           <div className="d-flex w-100 flex-row justify-content-between align-items-center me-5">
             <p className="fw-bold h5 mb-0 w-25">{ticker}</p>
-            <p className="mb-0 small text-center">
-              Units owned: {stock.qtyOwned} <br />
-              Investment amount:{" "}
-              {stock.totalCost.toLocaleString(undefined, {
-                style: "currency",
-                currency: "USD",
-              })}
+            <p className="mb-0 small w-25 d-flex">
+              <div className="text-start me-auto">
+                Units owned <br /> Invested
+              </div>
+              <div className="text-end fw-bold">
+                {stock.qtyOwned}
+                <br />
+                {stock.totalCost.toLocaleString(undefined, {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </div>
             </p>
             <p className="small mb-0 text-end w-25">
               <p className="m-0 fw-bold">
