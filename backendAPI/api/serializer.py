@@ -61,14 +61,13 @@ class TransactionSerializer(ModelSerializer):
         fields = ('game','quantity','unitprice','ticker','type')
 
 class TickerSearchSerializer(serializers.Serializer):
-    exchange = serializers.CharField()
-    shortname = serializers.CharField()
+    exchange = serializers.CharField(required=False)
+    shortname = serializers.CharField(required=False)
     longname = serializers.CharField()
-    quoteType = serializers.CharField()
+    quoteType = serializers.CharField(required=False)
     symbol = serializers.CharField()
-    index = serializers.CharField()
-    typeDisp = serializers.CharField()
-    exchDisp = serializers.CharField()
-    sector = serializers.CharField()
-    industry = serializers.CharField()
-    
+    index = serializers.CharField(required=False)
+    typeDisp = serializers.CharField(required=False)
+    exchDisp = serializers.CharField(required=False)
+    sector = serializers.CharField(required=False)
+    industry = serializers.CharField(required=False)
