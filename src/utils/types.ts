@@ -121,3 +121,12 @@ export interface AuthContextType {
   updateGame: () => void;
   activeGame: Game | undefined;
 }
+
+export interface Transaction {
+  game: number;
+  ticker: string;
+  quantity: number;
+  unitprice: number;
+  created: Date;
+  type: "NEW" | "BUY" | "SELL";
+}
