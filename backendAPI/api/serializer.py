@@ -62,9 +62,10 @@ class TransactionSerializer(ModelSerializer):
 
 class GameTransactionSerializer(ModelSerializer):
     transaction_set = TransactionSerializer(many=True, read_only=True)
+    user = serializers.StringRelatedField()
     class Meta:
         model = Game
-        fields = ('id','month','currentBalance','ended','transaction_set')
+        fields = ('id','month','currentBalance','ended','transaction_set','user')
 
 class TickerSearchSerializer(serializers.Serializer):
     exchange = serializers.CharField(required=False)
