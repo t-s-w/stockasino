@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { NavDropdown } from "react-bootstrap";
+import { Dropdown, NavDropdown } from "react-bootstrap";
+import { APIURL } from "../utils/constants";
+import { Link } from "react-router-dom";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
@@ -9,15 +11,18 @@ export default function SearchBar() {
     setQuery(evt.target.value);
   }
   useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-    fetch("https://query2.finance.yahoo.com/v1/finance/search?q=" + query)
-      .then((x) => x.json())
-      .then((x) => x.quotes.filter(quote.quoteType === "EQUITY"))
-      .then((x) => setQuotes(x), { signal })
-      .catch((err) => console.log(err.message));
+    if (query) {
+      const controller = new AbortController();
+      const signal = controller.signal;
+      fetch(APIURL + "search?q=" + query, { signal })
+        .then((x) => x.json())
+        .then((x) => setQuotes(x))
+        .catch((err) => {});
 
-    return () => controller.abort();
+      return () => controller.abort();
+    } else {
+      setQuotes([]);
+    }
   }, [query]);
   return (
     <NavDropdown
@@ -31,7 +36,19 @@ export default function SearchBar() {
         />
       }
     >
-      {}
+      {query
+        ? quotes.map((quote) => (
+            <Dropdown.Item>
+              <Link
+                to={"/viewticker/" + quote.symbol.replace(".", "_")}
+                className="d-flex flex-row justify-content-between text-decoration-none"
+              >
+                <span className="fw-bold me-3">{quote.symbol}</span>
+                <span className="text-secondary">{quote.longname}</span>
+              </Link>
+            </Dropdown.Item>
+          ))
+        : null}
     </NavDropdown>
   );
 }
