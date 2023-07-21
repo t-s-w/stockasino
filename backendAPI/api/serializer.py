@@ -50,7 +50,7 @@ class GameSerializer(ModelSerializer):
     
     class Meta:
         model = Game
-        fields = ('month', 'currentBalance', 'id')
+        fields = ('month', 'currentBalance', 'id','ended')
 
     def create(self,user):
         return Game.objects.create(**user)
@@ -58,7 +58,13 @@ class GameSerializer(ModelSerializer):
 class TransactionSerializer(ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ('game','quantity','unitprice','ticker','type')
+        fields = ('game','quantity','unitprice','ticker','type','created')
+
+class GameTransactionSerializer(ModelSerializer):
+    transaction_set = TransactionSerializer(many=True, read_only=True)
+    class Meta:
+        model = Game
+        fields = ('id','month','currentBalance','ended','transaction_set')
 
 class TickerSearchSerializer(serializers.Serializer):
     exchange = serializers.CharField(required=False)

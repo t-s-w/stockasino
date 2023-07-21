@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.db.utils import IntegrityError
 from django.http import JsonResponse, Http404
-from api.serializer import LoginTokenPairSerializer, SignupSerializer, GameSerializer, TransactionSerializer, TickerSearchSerializer
+from api.serializer import LoginTokenPairSerializer, SignupSerializer, GameSerializer, TransactionSerializer, TickerSearchSerializer, GameTransactionSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 import yfinance as yf 
 from rest_framework.response import Response
@@ -90,6 +90,15 @@ class TransactionsView(APIView):
             serializer = TransactionSerializer(transaction)
             game.update_balance()
             return Response(serializer.data)
+
+class GameTransactionsView(APIView):
+    def get(self, request, gameId,format=None):
+        game = Game.objects.get(id=gameId)
+        if not game:
+            return Response({"detail":"Invalid game ID"},status=status.HTTP_404_NOT_FOUND)
+        serializer = GameTransactionSerializer(game)
+        return Response(serializer.data)
+
 
 @api_view(["GET"])
 def searchView(request):

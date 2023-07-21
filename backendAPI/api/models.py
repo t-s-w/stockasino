@@ -45,3 +45,7 @@ class Transaction(models.Model):
     quantity = models.IntegerField()
     type = models.CharField(max_length=4,choices = transaction_types)
     created = models.DateTimeField(auto_now_add=True)
+
+    def save(self, force_insert=False, force_update=False):
+        self.ticker = self.ticker and self.ticker.upper()
+        super(Transaction, self).save(force_insert, force_update)
