@@ -23,9 +23,5 @@ export default function UserCard() {
       </NavDropdown>
       <GameInfoButton />
     </Nav>
-    // <>
-    //   <span>Hi, {user.username}!</span>
-    //   <GameInfoButton />
-    // </>
   );
 }

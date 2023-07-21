@@ -4,6 +4,7 @@ import AuthContext from "../auth/AuthContext";
 import { useContext } from "react";
 import UserCard from "./UserCard";
 import Login from "./Login";
+import SearchBar from "./SearchBar";
 
 export default function NavBar() {
   const { user } = useContext(AuthContext);
@@ -20,6 +21,7 @@ export default function NavBar() {
             style={{ maxHeight: "100px" }}
             navbarScroll
           ></Nav>
+          <SearchBar />
           {user ? <UserCard /> : <Login />}
         </Navbar.Collapse>
       </Container>
