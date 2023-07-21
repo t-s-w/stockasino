@@ -44,3 +44,4 @@ class Transaction(models.Model):
     unitprice = models.DecimalField(max_digits=10,decimal_places=2)
     quantity = models.IntegerField()
     type = models.CharField(max_length=4,choices = transaction_types)
+    created = models.DateTimeField(auto_now_add=True)
