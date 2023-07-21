@@ -48,4 +48,5 @@ class Transaction(models.Model):
 
     def save(self, force_insert=False, force_update=False):
         self.ticker = self.ticker and self.ticker.upper()
+        self.ticker.replace('_','.')
         super(Transaction, self).save(force_insert, force_update)
