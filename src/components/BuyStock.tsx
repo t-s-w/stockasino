@@ -12,7 +12,7 @@ type Props = {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export default function BuyStock(props: Props) {
-  const { tokens, updateBalance } = useContext(AuthContext);
+  const { updateGame } = useContext(AuthContext);
   const { slug } = useParams();
   const [qty, setQty] = useState(1);
   const { maxBuyable, price, setLoading } = props;
@@ -29,7 +29,7 @@ export default function BuyStock(props: Props) {
         ticker: slug,
         type: "BUY",
       });
-      updateBalance();
+      updateGame();
     } catch (err) {
       if (err instanceof APIError) {
         console.log(err.body);
@@ -52,6 +52,7 @@ export default function BuyStock(props: Props) {
           <p className="fw-bold">Buy this stock:</p>
 
           <Form.Range
+            style={{ maxWidth: "90%", marginLeft: "1em" }}
             min={1}
             max={maxBuyable}
             id="buyQuantitySlider"

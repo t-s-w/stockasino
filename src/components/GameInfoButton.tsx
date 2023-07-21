@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function GameInfoButton() {
   const navigate = useNavigate();
   const { activeGame, updateGame } = useContext(AuthContext);
-  updateGame();
+  useEffect(updateGame, []);
 
   return activeGame ? (
     <Nav.Item>
