@@ -94,6 +94,7 @@ export interface Game {
   user?: string | number;
   ended?: boolean;
   transaction_set?: Transaction[];
+  prices?: Record<string, number>;
 }
 
 export interface User {

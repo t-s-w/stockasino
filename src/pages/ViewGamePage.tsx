@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import { APIError, Game } from "../utils/types";
 import sendRequest from "../utils/sendRequest";
 import { APIURL } from "../utils/constants";
+import { Container } from "react-bootstrap";
+import Holdings from "../utils/Holdings";
+import Portfolio from "../components/Portfolio";
 
 export default function ViewGamePage() {
   const { gameId } = useParams();
@@ -16,7 +19,7 @@ export default function ViewGamePage() {
       const game = await sendRequest(APIURL + `games/${gameId}/transactions`);
       game.month = new Date(game.month);
       game.currentBalance = parseFloat(game.currentBalance);
-      setGameInfo(game);
+      setGameInfo(game as Game);
     } catch (err) {
       if (err instanceof APIError) {
         setError(err.body.detail);
@@ -28,16 +31,24 @@ export default function ViewGamePage() {
   useEffect(() => {
     fetchGameData();
   }, []);
+
   return (
     <Loading loading={loading}>
       {error ? (
         <h1>{error}</h1>
       ) : (
         gameInfo && (
-          <h1>{`${gameInfo.user}'s round of ${gameInfo.month?.toLocaleString(
-            undefined,
-            { year: "numeric", month: "long" }
-          )}`}</h1>
+          <Container>
+            <h1>{`${gameInfo.user}'s round of ${gameInfo.month?.toLocaleString(
+              undefined,
+              { year: "numeric", month: "long" }
+            )}`}</h1>
+            <h2>Current Holdings</h2>
+            <Portfolio
+              transactions={gameInfo.transaction_set}
+              prices={gameInfo.prices}
+            />
+          </Container>
         )
       )}
     </Loading>
