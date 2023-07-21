@@ -11,5 +11,5 @@ urlpatterns = [
     path('auth/signup',views.SignupView.as_view()),
     path('games/',views.GamesView.as_view()),
     path('transactions/',views.TransactionsView.as_view()),
-    path('games/checkBalance', views.BalanceView.as_view())
+    path('games/update', views.UpdateGameView.as_view())
 ]

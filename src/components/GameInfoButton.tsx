@@ -5,15 +5,15 @@ import { useNavigate } from "react-router-dom";
 
 export default function GameInfoButton() {
   const navigate = useNavigate();
-  const { user, updateBalance } = useContext(AuthContext);
-  useEffect(updateBalance, []);
+  const { activeGame, updateGame } = useContext(AuthContext);
+  updateGame();
 
-  return user?.game && user.game.month ? (
+  return activeGame ? (
     <Nav.Item>
       <Nav.Link>
         <p className="mb-0">
           Round of{" "}
-          {user.game.month.toLocaleDateString(undefined, {
+          {activeGame.month.toLocaleDateString(undefined, {
             year: "numeric",
             month: "long",
           })}
@@ -21,7 +21,7 @@ export default function GameInfoButton() {
         <p className="mb-0">
           Current Balance:{" "}
           <Badge bg="secondary">
-            {user.game.currentBalance.toLocaleString(undefined, {
+            {activeGame.currentBalance.toLocaleString(undefined, {
               style: "currency",
               currency: "USD",
             })}
