@@ -1,5 +1,4 @@
 import React from "react";
-import { NumberSchema } from "yup";
 
 export interface LoginInfo {
   username: string;
@@ -22,7 +21,7 @@ export interface FetchOptions {
     "Content-Type"?: string;
     Authorization?: string;
   };
-  body?: Object;
+  body?: object;
 }
 
 export class ModelError extends Error {
@@ -31,7 +30,7 @@ export class ModelError extends Error {
 
   constructor(status: number, body: Record<string, string[]>) {
     let msg = undefined;
-    for (let key in body) {
+    for (const key in body) {
       msg = body[key][0];
       break;
     }
@@ -43,9 +42,9 @@ export class ModelError extends Error {
 
 export class APIError extends Error {
   status: number;
-  body: object;
+  body: Record<string, string | string[]>;
 
-  constructor(status: number, body: object) {
+  constructor(status: number, body: Record<string, string | string[]>) {
     super();
     this.body = body;
     this.status = status;
@@ -92,6 +91,9 @@ export interface Game {
   month: Date;
   currentBalance: number;
   id: number;
+  user?: string | number;
+  ended?: boolean;
+  transaction_set?: Transaction[];
 }
 
 export interface User {

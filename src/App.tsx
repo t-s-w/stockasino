@@ -8,6 +8,7 @@ import NavBar from "./components/NavBar";
 import { Container } from "react-bootstrap";
 import ViewTickerPage from "./pages/ViewTickerPage";
 import UserGameListPage from "./pages/UserGameListPage";
+import ViewGamePage from "./pages/ViewGamePage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/viewticker/:slug" element={<ViewTickerPage />} />
           <Route path="/user/games" element={<UserGameListPage />} />
+          <Route path="/game/:gameId" element={<ViewGamePage />} />
         </Routes>
       </Container>
     </AuthProvider>
