@@ -20,7 +20,6 @@ class LoginTokenPairSerializer(TokenObtainPairSerializer):
         token['username'] = user.username
         if currentGame:
             currentGame.update_balance()
-            token['game'] = GameSerializer(currentGame).data
         return token
     
 class SignupSerializer(ModelSerializer):
