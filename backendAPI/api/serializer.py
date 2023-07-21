@@ -59,3 +59,16 @@ class TransactionSerializer(ModelSerializer):
     class Meta:
         model = Transaction
         fields = ('game','quantity','unitprice','ticker','type')
+
+class TickerSearchSerializer(serializers.Serializer):
+    exchange = serializers.CharField()
+    shortname = serializers.CharField()
+    longname = serializers.CharField()
+    quoteType = serializers.CharField()
+    symbol = serializers.CharField()
+    index = serializers.CharField()
+    typeDisp = serializers.CharField()
+    exchDisp = serializers.CharField()
+    sector = serializers.CharField()
+    industry = serializers.CharField()
+    

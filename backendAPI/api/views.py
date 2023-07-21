@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.db.utils import IntegrityError
 from django.http import JsonResponse, Http404
-from api.serializer import LoginTokenPairSerializer, SignupSerializer, GameSerializer, TransactionSerializer
+from api.serializer import LoginTokenPairSerializer, SignupSerializer, GameSerializer, TransactionSerializer, TickerSearchSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 import yfinance as yf 
 from rest_framework.response import Response
@@ -12,6 +12,7 @@ from rest_framework.views import APIView
 from .models import Game, Transaction
 import datetime
 from requests.exceptions import HTTPError
+import requests
 
 
 def get_current_month():
@@ -89,4 +90,16 @@ class TransactionsView(APIView):
             serializer = TransactionSerializer(transaction)
             game.update_balance()
             return Response(serializer.data)
-            
+
+@api_view(["GET"])
+def searchView(request):
+    query = request.query_params["q"]
+    headers = {
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+}
+    url = 'https://query2.finance.yahoo.com/v1/finance/search?q={}'.format(query)
+    r = requests.get(url,headers=headers) 
+    searchResults = r.json()
+    data = [x for x in searchResults['quotes'] if x['quoteType'] == 'EQUITY']
+    output = TickerSearchSerializer(data,many=True)
+    return Response(output.data)
