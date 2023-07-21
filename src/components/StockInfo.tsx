@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function StockInfo(props: Props) {
-  const { user } = useContext(AuthContext);
+  const { activeGame } = useContext(AuthContext);
 
   const { stockInfo, setLoading } = props;
   const fontColour =
@@ -24,9 +24,9 @@ export default function StockInfo(props: Props) {
 
   const diffs = diff(stockInfo.previousClose, stockInfo.currentPrice);
   const maxBuyable =
-    user?.game?.currentBalance &&
-    user?.game?.currentBalance > stockInfo.currentPrice
-      ? Math.floor(user.game.currentBalance / stockInfo.currentPrice)
+    activeGame?.currentBalance &&
+    activeGame.currentBalance > stockInfo.currentPrice
+      ? Math.floor(activeGame.currentBalance / stockInfo.currentPrice)
       : 0;
 
   return (

@@ -31,12 +31,6 @@ function parseUserInfo(accessToken: string) {
   if (!accessToken) return null;
   const decoded = jwt_decode(accessToken);
   if (!decoded) return null;
-  if (decoded.game && decoded.game.month && decoded.game.currentBalance) {
-    decoded.game.month = new Date(decoded.game?.month);
-    decoded.game.currentBalance = parseFloat(decoded.game.currentBalance);
-  } else {
-    decoded.game = undefined;
-  }
   return decoded as User;
 }
 
@@ -50,6 +44,7 @@ export function AuthProvider({ children }) {
     : null;
   const userInfo = parseUserInfo(storedTokens?.access);
   const [user, setUser] = useState(userInfo);
+  const [activeGame, setActiveGame] = useState({} as Game);
   const expired = decoded?.exp
     ? decoded.exp * 1000 < new Date().valueOf()
     : false;
@@ -75,8 +70,8 @@ export function AuthProvider({ children }) {
       const tokens = responseJSON as TokenPair;
       localStorage.setItem("tokens", JSON.stringify(tokens));
       setTokens(tokens);
-      const user = parseUserInfo(tokens.access) as Token;
-      setTimeout(() => setUser(user), 2000);
+      const parsedUser = parseUserInfo(tokens.access);
+      setTimeout(() => setUser(parsedUser), 1000);
     } catch (err) {
       if (err instanceof APIError) {
         throw new LoginError(err.body.detail);
@@ -92,8 +87,8 @@ export function AuthProvider({ children }) {
       const tokens = responseJSON as TokenPair;
       localStorage.setItem("tokens", JSON.stringify(tokens));
       setTokens(tokens);
-      const user = parseUserInfo(tokens.access) as Token;
-      setUser(user);
+      const parsedUser = parseUserInfo(tokens.access);
+      setUser(parsedUser);
     } catch (err) {
       if (err instanceof APIError) {
         throw new Error(err.body.detail);
@@ -116,7 +111,7 @@ export function AuthProvider({ children }) {
       const tokens = responseJSON as TokenPair;
       localStorage.setItem("tokens", JSON.stringify(tokens));
       setTokens(tokens);
-      const user = jwt_decode(tokens.access) as Token;
+      const user = parseUserInfo(tokens.access) as User;
       setTimeout(() => setUser(user), 1000);
     } catch (err) {
       if (err instanceof APIError) {
@@ -134,6 +129,27 @@ export function AuthProvider({ children }) {
     navigate("/login");
   }
 
+  function updateBalance() {
+    try {
+      const tokens = JSON.parse(localStorage.getItem("tokens"));
+      if (!tokens) throw new Error("No token to check balance");
+
+      const userInfo = parseUserInfo(tokens.access);
+      if (activeGame.id) {
+        sendRequest(APIURL + "games/checkBalance").then((x) => {
+          setCurrentBalance(x.balance);
+        });
+      }
+      setUser(userInfo);
+    } catch (err) {
+      if (err instanceof APIError) {
+        throw new Error(err.body.detail);
+      } else {
+        console.log(err);
+      }
+    }
+  }
+
   const contextData = {
     user,
     setUser,
@@ -143,6 +159,8 @@ export function AuthProvider({ children }) {
     logout,
     signup,
     refresh,
+    updateBalance,
+    currentBalance,
   };
 
   return (

@@ -12,7 +12,7 @@ type Props = {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export default function BuyStock(props: Props) {
-  const { tokens, refresh } = useContext(AuthContext);
+  const { tokens, updateBalance } = useContext(AuthContext);
   const { slug } = useParams();
   const [qty, setQty] = useState(1);
   const { maxBuyable, price, setLoading } = props;
@@ -29,7 +29,7 @@ export default function BuyStock(props: Props) {
         ticker: slug,
         type: "BUY",
       });
-      await refresh(tokens.refresh);
+      updateBalance();
     } catch (err) {
       if (err instanceof APIError) {
         console.log(err.body);

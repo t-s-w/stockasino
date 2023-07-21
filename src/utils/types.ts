@@ -96,7 +96,6 @@ export interface Game {
 
 export interface User {
   username: string;
-  game: Game | undefined;
 }
 
 export interface Token extends User {
@@ -116,8 +115,9 @@ export interface AuthContextType {
     email: string;
   }) => Promise<void>;
   setTokens: React.Dispatch<React.SetStateAction<TokenPair | null>>;
-  setToken: React.Dispatch<React.SetStateAction<Token | null>>;
   tokens: TokenPair | null;
   user: User | null;
   refresh: (refresh: string) => Promise<void>;
+  updateGame: () => void;
+  activeGame: Game | undefined;
 }

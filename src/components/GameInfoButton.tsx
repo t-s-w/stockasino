@@ -1,11 +1,13 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AuthContext from "../auth/AuthContext";
 import { Badge, Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export default function GameInfoButton() {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, updateBalance } = useContext(AuthContext);
+  useEffect(updateBalance, []);
+
   return user?.game && user.game.month ? (
     <Nav.Item>
       <Nav.Link>
