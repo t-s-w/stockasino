@@ -5,7 +5,6 @@ import { APIError, Game } from "../utils/types";
 import sendRequest from "../utils/sendRequest";
 import { APIURL } from "../utils/constants";
 import { Container } from "react-bootstrap";
-import Holdings from "../utils/Holdings";
 import Portfolio from "../components/Portfolio";
 
 export default function ViewGamePage() {
@@ -16,10 +15,11 @@ export default function ViewGamePage() {
   async function fetchGameData() {
     try {
       setLoading(true);
-      const game = await sendRequest(APIURL + `games/${gameId}/transactions`);
+      const game = await sendRequest(APIURL + `games/${gameId}/details`);
       game.month = new Date(game.month);
-      game.currentBalance = parseFloat(game.currentBalance);
+      game.currentBalance = parseFloat(game.cash);
       setGameInfo(game as Game);
+      console.log(game);
     } catch (err) {
       if (err instanceof APIError) {
         setError(err.body.detail);
@@ -44,10 +44,7 @@ export default function ViewGamePage() {
               { year: "numeric", month: "long" }
             )}`}</h1>
             <h2>Current Holdings</h2>
-            <Portfolio
-              transactions={gameInfo.transaction_set}
-              prices={gameInfo.prices}
-            />
+            {gameInfo && <Portfolio gameInfo={gameInfo} />}
           </Container>
         )
       )}

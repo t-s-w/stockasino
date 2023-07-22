@@ -66,9 +66,11 @@ class GameSummary:
         self.ended = game.ended
         self.cash = 0
         self.portfolio = {}
+        self.starting = 0
         for transaction in transactions:
             if transaction.type == "NEW":
                 self.cash += (transaction.unitprice)
+                self.starting = transaction.unitprice
             else:
                 if transaction.ticker not in self.portfolio:
                     self.portfolio[transaction.ticker] = StockHoldings(transaction.ticker)
@@ -87,6 +89,7 @@ class GameSummary:
         return {
             "id": self.id,
             "user": self.user,
+            "starting": self.starting,
             "month": self.month,
             "ended": self.ended,
             "cash": self.cash,

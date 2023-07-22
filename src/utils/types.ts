@@ -1,4 +1,5 @@
 import React from "react";
+import StockHoldings from "./Holdings";
 
 export interface LoginInfo {
   username: string;
@@ -88,13 +89,14 @@ export interface StockInfoParser {
 }
 
 export interface Game {
+  value?: number;
+  starting?: number;
   month: Date;
   currentBalance: number;
   id: number;
   user?: string | number;
   ended?: boolean;
-  transaction_set?: Transaction[];
-  prices?: Record<string, number>;
+  portfolio?: Record<string, StockHoldings>;
 }
 
 export interface User {
@@ -126,6 +128,8 @@ export interface AuthContextType {
 }
 
 export interface Transaction {
+  id?: number;
+  game_id?: number;
   game: number;
   ticker: string;
   quantity: number;
