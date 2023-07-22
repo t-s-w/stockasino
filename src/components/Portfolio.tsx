@@ -31,7 +31,7 @@ export default function Portfolio(props: Props) {
       <Accordion.Item eventKey={ticker} key={ticker}>
         <Accordion.Header>
           <div className="d-flex w-100 flex-row justify-content-between align-items-center me-5">
-            <p className="fw-bold h5 mb-0 w-25">{ticker}</p>
+            <p className="fw-bold  mb-0 w-25">{ticker}</p>
 
             <p className="small mb-0 text-end w-25">
               <span className="m-0 fw-bold">
@@ -109,7 +109,7 @@ export default function Portfolio(props: Props) {
       }}
     >
       <div className="mb-0 w-100 d-flex flex-row align-items-center pe-3">
-        <p className="fw-bold mb-0 h4 w-25">Portfolio Value </p>
+        <p className="fw-bold mb-0 h5 w-25">Portfolio Value </p>
         <p className="text-end mb-0 pe-3 w-25">
           <span className="text-end">
             {gameInfo.value?.toLocaleString(undefined, {

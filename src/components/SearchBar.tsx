@@ -27,6 +27,7 @@ export default function SearchBar() {
   return (
     <NavDropdown
       id="searchBar"
+      className="mx-4"
       title={
         <input
           type="text"

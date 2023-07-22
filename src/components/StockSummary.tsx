@@ -16,13 +16,13 @@ export default function StockSummary(props: PropType) {
   }
   return (
     <Container
-      className="d-flex flex-column flex-wrap align-items-start align-content-start mt-2"
+      className="d-flex flex-row flex-wrap align-items-start align-content-start mt-2"
       style={{ height: "23em" }}
     >
       {output.map((x) => (
         <div
           key={x.name}
-          className="p-1 small w-50 border-bottom border-2 d-flex flex-row align-items-center justify-content-between me-2"
+          className="p-1 small w-50 border-bottom border-2 d-flex flex-row align-items-center justify-content-between px-2"
           style={{ height: "3.5em" }}
         >
           <p className="mb-0">{x.name}</p>
