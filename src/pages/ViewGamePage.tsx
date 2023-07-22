@@ -39,10 +39,12 @@ export default function ViewGamePage() {
       ) : (
         gameInfo && (
           <Container>
-            <h1>{`${gameInfo.user}'s round of ${gameInfo.month?.toLocaleString(
-              undefined,
-              { year: "numeric", month: "long" }
-            )}`}</h1>
+            <h1 className="mb-5">{`${
+              gameInfo.user
+            }'s round of ${gameInfo.month?.toLocaleString(undefined, {
+              year: "numeric",
+              month: "long",
+            })}`}</h1>
             <h2>Current Holdings</h2>
             {gameInfo && <Portfolio gameInfo={gameInfo} />}
           </Container>

@@ -1,7 +1,7 @@
-import { Accordion } from "react-bootstrap";
-import { Game, Transaction } from "../utils/types";
-import Holdings from "../utils/Holdings";
+import { Accordion, Table, Button } from "react-bootstrap";
+import { Game } from "../utils/types";
 import { diff } from "../utils/functions";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   gameInfo: Game;
@@ -17,6 +17,7 @@ function delta(a, b) {
 }
 
 export default function Portfolio(props: Props) {
+  const navigate = useNavigate();
   const { gameInfo } = props;
 
   const elements = [];
@@ -31,19 +32,7 @@ export default function Portfolio(props: Props) {
         <Accordion.Header>
           <div className="d-flex w-100 flex-row justify-content-between align-items-center me-5">
             <p className="fw-bold h5 mb-0 w-25">{ticker}</p>
-            <div className="mb-0 small w-25 d-flex">
-              <div className="text-start me-auto">
-                Units owned <br /> Invested
-              </div>
-              <div className="text-end fw-bold">
-                {stock.qtyOwned}
-                <br />
-                {stock.totalCost.toLocaleString(undefined, {
-                  style: "currency",
-                  currency: "USD",
-                })}
-              </div>
-            </div>
+
             <p className="small mb-0 text-end w-25">
               <span className="m-0 fw-bold">
                 {holdingsValue.toLocaleString(undefined, {
@@ -57,9 +46,54 @@ export default function Portfolio(props: Props) {
           </div>
         </Accordion.Header>
         <Accordion.Body>
-          {stock.transactionHistory
-            .filter((txn) => txn.ticker.toUpperCase() === ticker.toUpperCase())
-            .map((x) => x.created)}
+          <div className="d-flex justify-content-between">
+            <div className="mb-0 w-25 d-flex">
+              <div className="text-start me-auto">
+                Units owned <br /> Invested
+              </div>
+              <div className="text-end fw-bold">
+                {stock.qtyOwned}
+                <br />
+                {stock.totalCost.toLocaleString(undefined, {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </div>
+            </div>
+            <Button
+              className="w-auto"
+              onClick={() => navigate(`/viewticker/${ticker}`)}
+            >
+              View stock info
+            </Button>
+          </div>
+          <h6 className="mt-3">Transaction History</h6>
+          <Table>
+            <thead>
+              <tr>
+                <th scope="col">Datetime</th>
+                <th scope="col">Transaction type</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Unit price</th>
+              </tr>
+            </thead>
+            {stock.transactionHistory.map((x) => (
+              <tr key={x.id}>
+                <td>
+                  {new Date(x.created).toLocaleTimeString("en-sg", {
+                    month: "long",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                    second: "numeric",
+                  })}
+                </td>
+                <td className="fw-bold">{x.type}</td>
+                <td>{x.quantity}</td>
+                <td>{x.unitprice}</td>
+              </tr>
+            ))}
+          </Table>
         </Accordion.Body>
       </Accordion.Item>
     );
