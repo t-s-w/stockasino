@@ -30,6 +30,30 @@ def stockDetails(request, slug):
     except:
         return JsonResponse({"message": 'Stock ticker provided does not exist'}, status=status.HTTP_404_NOT_FOUND   )
     
+@api_view(['GET'])
+def stockPrices(request):
+    ticker = request.query_params.get('ticker', None)
+    period = request.query_params.get('period', None)
+    if not ticker or not period or period not in ['1w','1wk','3mo','1y','5y']:
+        return Response({"detail":"Invalid ticker or period"}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        tickerData = yf.Ticker(ticker)
+        tickerData.info
+    except HTTPError:
+        return Response({"detail":"Invalid ticker"},status=status.HTTP_404_NOT_FOUND) 
+    intervals = ['1m','2m','5m','15m','30m','1h','5d','1wk','1mo','3mo']
+    for int in intervals:
+        try:
+            priceData = tickerData.history(interval=int,period=period)
+            if not len(priceData):
+                continue
+            else:
+                priceData.reset_index(inplace=True)
+                return Response(priceData.to_dict('records'))
+        except:
+            continue
+    return Response({"detail":"Could not fetch data"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 class LoginTokenPairView(TokenObtainPairView):
     serializer_class = LoginTokenPairSerializer
 
@@ -126,3 +150,4 @@ def searchView(request):
     data = [x for x in searchResults['quotes'] if x['quoteType'] == 'EQUITY']
     output = TickerSearchSerializer(data,many=True)
     return Response(output.data)
+
