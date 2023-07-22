@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from django.contrib.auth.models import User
+from .classes import GameSummary
 
 def get_current_month():
     now = datetime.datetime.now()
@@ -31,6 +32,12 @@ class Game(models.Model):
             value += (-1 if transaction.type == "BUY" else 1) * transaction.quantity * transaction.unitprice
         self.currentBalance = value
         self.save()   
+
+    def summarize_holdings(self):
+        transactions = Transaction.objects.filter(game=self)
+        gameSummary = GameSummary(self,transactions)
+        return gameSummary.to_dict()
+
 
     
 class Transaction(models.Model):
