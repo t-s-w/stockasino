@@ -22,17 +22,17 @@ class StockHoldings:
             if toSell > self.qtyOwned:
                 raise "Insufficient holdings to sell"
             while toSell > 0:
-                if self.holdings.length == 0:
+                if len(self.holdings) == 0:
                     raise "Insufficient holdings to sell"
                 firstIn = self.holdings.popleft()
                 if firstIn:
-                    if firstIn.quantity < toSell:
+                    if firstIn['quantity'] < toSell:
                         self.qtyOwned -= firstIn['quantity']
                         self.totalCost -= firstIn['quantity'] * firstIn['unitprice']
                         toSell -= firstIn['quantity']
                     else: 
                         self.qtyOwned -= toSell
-                        self.totalCost -= toSell * firstIn.unitprice
+                        self.totalCost -= toSell * firstIn['unitprice']
                         firstIn['quantity'] -= toSell
                         toSell = 0
                         if firstIn['quantity'] > 0:
