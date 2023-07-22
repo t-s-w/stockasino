@@ -47,9 +47,9 @@ export default function PriceHistoryGraph(props: Props) {
     <ResponsiveContainer width="100%" height="100%">
       <LineChart width={600} height={400} data={priceData}>
         <CartesianGrid />
-        <Line type="monotone" dataKey="Close" dot={false} />
-        <Line type="monotone" dataKey="High" dot={false} />
-        <Line type="monotone" dataKey="Low" dot={false} />
+        <Line type="monotone" dataKey="Close" dot={false} stroke="#6c757d" />
+        <Line type="monotone" dataKey="High" dot={false} stroke="#198754" />
+        <Line type="monotone" dataKey="Low" dot={false} stroke="#dc3545" />
         <XAxis
           allowDuplicatedCategory={false}
           minTickGap={50}
