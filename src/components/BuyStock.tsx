@@ -21,7 +21,6 @@ export default function BuyStock(props: Props) {
   }
   async function handleSubmit(evt: React.FormEvent<HTMLFormElement>) {
     evt.preventDefault();
-    console.log("click");
     setLoading(true);
     try {
       const response = await sendRequest(APIURL + "transactions/", "POST", {

@@ -5,6 +5,7 @@ import { StockInfo as StockInformation } from "../utils/types";
 import AuthContext from "../auth/AuthContext";
 import React, { useContext } from "react";
 import BuyStock from "./BuyStock";
+import SellStock from "./SellStock";
 
 type Props = {
   stockInfo: StockInformation;
@@ -57,6 +58,7 @@ export default function StockInfo(props: Props) {
           </Row>
         </Container>
         <Container>
+          <SellStock setLoading={setLoading} price={stockInfo.currentPrice} />
           {maxBuyable > 0 && (
             <BuyStock
               setLoading={setLoading}

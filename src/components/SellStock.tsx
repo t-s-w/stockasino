@@ -1,24 +1,82 @@
 import { useParams } from "react-router-dom";
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
+import sendRequest from "../utils/sendRequest";
+import React, { useEffect, useState } from "react";
+import StockHoldings from "../utils/Holdings";
+import { APIError } from "../utils/types";
+import { APIURL } from "../utils/constants";
 
-export default function SellStock() {
+type Props = {
+  price: number;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function SellStock(props: Props) {
   const { slug } = useParams();
-  async function fetchHoldings() {}
+  const { price, setLoading } = props;
+  const [error, setError] = useState("");
+  const [qty, setQty] = useState(1);
 
-  return (
+  const [holdings, setHoldings] = useState({} as StockHoldings);
+  console.log("holdings", holdings);
+  async function fetchHoldings() {
+    try {
+      const data = (await sendRequest(
+        APIURL + "myholdings?ticker=" + slug
+      )) as StockHoldings;
+      setHoldings(data);
+    } catch (err) {
+      if (err instanceof APIError) {
+        setError(err.body.detail);
+      }
+    }
+  }
+
+  async function handleSubmit(evt: React.FormEvent<HTMLFormElement>) {
+    evt.preventDefault();
+    setLoading(true);
+    try {
+      const response = await sendRequest(APIURL + "transactions/", "POST", {
+        quantity: qty,
+        ticker: slug,
+        type: "SELL",
+      });
+      updateGame();
+    } catch (err) {
+      if (err instanceof APIError) {
+        setError(err.message);
+      } else {
+        console.log(err);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    setQty(parseInt(evt.target.value));
+  }
+
+  useEffect(() => {
+    fetchHoldings();
+  }, []);
+
+  return holdings.qtyOwned <= 0 ? null : (
     <Card body>
+      <span className="fw-bold">Units owned: </span>
+      <span>{holdings.qtyOwned}</span>
       <Form
         onSubmit={(evt) => {
           void handleSubmit(evt);
         }}
       >
         <Row className="mb-2">
-          <p className="fw-bold">Buy this stock:</p>
+          <p className="fw-bold">Sell your owned stock:</p>
 
           <Form.Range
             style={{ maxWidth: "90%", marginLeft: "1em" }}
             min={1}
-            max={maxBuyable}
+            max={holdings.qtyOwned}
             id="buyQuantitySlider"
             onChange={handleChange}
             value={qty}
@@ -30,7 +88,7 @@ export default function SellStock() {
             <input
               type="number"
               min={1}
-              max={maxBuyable}
+              max={holdings.qtyOwned}
               id="buyQuantityType"
               onChange={handleChange}
               step={1}
@@ -49,7 +107,7 @@ export default function SellStock() {
           </Col>
           <Col className="d-flex justify-content-center align-items-center">
             <Button type="submit" style={{ height: "fit-content" }}>
-              Buy
+              Sell
             </Button>
           </Col>
         </Row>
