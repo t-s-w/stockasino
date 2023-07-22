@@ -41,11 +41,15 @@ def stockPrices(request):
         tickerData.info
     except HTTPError:
         return Response({"detail":"Invalid ticker"},status=status.HTTP_404_NOT_FOUND) 
+    """
+    Method for returning price data that takes the smallest interval given the period. Guaranteed to give back a result,
+    but may give a granularity that isn't helpful (e.g. no need to see hourly data for over a year).
+    """
     intervals = ['1m','2m','5m','15m','30m','1h','5d','1wk','1mo','3mo']
     for int in intervals:
         try:
             priceData = tickerData.history(interval=int,period=period)
-            if not len(priceData):
+            if len(priceData) <= 1:
                 continue
             else:
                 priceData.reset_index(inplace=True)
@@ -54,6 +58,16 @@ def stockPrices(request):
         except:
             continue
     return Response({"detail":"Could not fetch data"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    """
+    Method for returning price data that fixes the interval to give about 300-600 data points.
+    Fixed intervals per period may result in errors if for some reason some ticker doesn't have the granularity requested.
+    """
+    # intervals = {'1w': '15m', '1wk': '1m', '3mo':'1h','1h':'1d','5y':'5d'}
+    # priceData = tickerData.history(period = period, interval = intervals[period])
+    # priceData.reset_index(inplace=True)
+    # output = {"metadata":{"interval":intervals[period]},"data":priceData.to_dict('records')}
+    # return Response(output)
+
     
 class LoginTokenPairView(TokenObtainPairView):
     serializer_class = LoginTokenPairSerializer
