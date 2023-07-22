@@ -12,7 +12,6 @@ class StockHoldings:
         self.qtyOwned = 0
         self.totalCost = 0
         self.currentPrice = 0
-        self.currentValue = 0
         self.transactionHistory = []
 
     def addTransaction(self,transaction):
@@ -40,7 +39,11 @@ class StockHoldings:
                             self.holdings.appendleft(firstIn)
         elif transaction.type == "BUY":
             self.holdings.append({"unitprice": transaction.unitprice, "quantity": transaction.quantity})
-        self.transactionHistory.append(transaction.__dict__)
+            self.qtyOwned += transaction.quantity
+            self.totalCost += transaction.quantity * transaction.unitprice
+        txnData = transaction.__dict__
+        del txnData['_state']
+        self.transactionHistory.append(txnData)
 
     def avgCost(self):
         return self.totalCost / self.qtyOwned
@@ -52,7 +55,6 @@ class StockHoldings:
             "qtyOwned": self.qtyOwned,
             "totalCost": self.totalCost,
             "currentPrice": self.currentPrice,
-            "currentValue": self.currentValue,
             "transactionHistory": self.transactionHistory
         }
     

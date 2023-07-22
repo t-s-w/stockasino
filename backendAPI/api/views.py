@@ -91,23 +91,14 @@ class TransactionsView(APIView):
             game.update_balance()
             return Response(serializer.data)
 
-class GameTransactionsView(APIView):
+class GameDetailView(APIView):
     def get(self, request, gameId,format=None):
-        try:
+        # try:
             game = Game.objects.get(id=gameId)
-            serializer = GameTransactionSerializer(game)
-            
-        except:
-            return Response({"detail":"Game not found"},status = status.HTTP_404_NOT_FOUND)
-        try:
-            relevant_tickers = list(set(x['ticker'].upper() for x in serializer.data['transaction_set'] if x['ticker']))
-            tickers = yf.Tickers(relevant_tickers)
-            prices = {ticker: tickers.tickers[ticker].info['currentPrice'] for ticker in relevant_tickers}
-            result = serializer.data
-            result['prices'] = prices
-        except:
-            return Response({"detail": "Error fetching ticker prices"})
-        return Response(result)
+            print(game.summarize_holdings())
+            return Response(game.summarize_holdings())
+        # except:
+        #     return Response({"detail":"Failed to fetch game"},status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])
