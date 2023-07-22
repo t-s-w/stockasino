@@ -1,17 +1,21 @@
 import { Container } from "react-bootstrap";
 import PrivateRoute from "../auth/PrivateRoute";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { APIError, Game } from "../utils/types";
 import sendRequest from "../utils/sendRequest";
 import Loading from "../components/Loading";
 import { APIURL } from "../utils/constants";
 import GameCard from "../components/GameCard";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../auth/AuthContext";
 
 export default function UserGameListPage() {
+  const { updateGame } = useContext(AuthContext);
   const [games, setGames] = useState([] as Game[]);
   const [currentGame, setCurrentGame] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
   async function getGames() {
     try {
       const response = await sendRequest(APIURL + "games").then((x) =>
@@ -55,6 +59,16 @@ export default function UserGameListPage() {
     );
   });
 
+  async function startGame() {
+    try {
+      const response = await sendRequest(APIURL + "games/", "POST");
+      updateGame();
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <>
       <PrivateRoute />
@@ -82,7 +96,12 @@ export default function UserGameListPage() {
           ) : (
             <div className="d-flex flex-column align-items-center my-5">
               <p className="text-center">No game active at the moment.</p>
-              <button className="btn btn-primary    ">Start one now!</button>
+              <button
+                className="btn btn-primary"
+                onClick={() => void startGame()}
+              >
+                Start one now!
+              </button>
             </div>
           )}
           <h2>Past Games</h2>
