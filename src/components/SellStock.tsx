@@ -18,7 +18,6 @@ export default function SellStock(props: Props) {
   const [qty, setQty] = useState(1);
 
   const [holdings, setHoldings] = useState({} as StockHoldings);
-  console.log("holdings", holdings);
   async function fetchHoldings() {
     try {
       const data = (await sendRequest(
