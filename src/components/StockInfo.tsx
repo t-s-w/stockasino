@@ -6,6 +6,7 @@ import AuthContext from "../auth/AuthContext";
 import React, { useContext } from "react";
 import BuyStock from "./BuyStock";
 import SellStock from "./SellStock";
+import PriceHistoryGraph from "./PriceHistoryGraph";
 
 type Props = {
   stockInfo: StockInformation;
@@ -73,7 +74,7 @@ export default function StockInfo(props: Props) {
           <StockSummary stockInfo={stockInfo} />
         </Tab>
         <Tab eventKey="graph" title="Graph">
-          test2
+          <PriceHistoryGraph period={"1w"} />
         </Tab>
       </Tabs>
     </>
