@@ -34,7 +34,7 @@ def stockDetails(request, slug):
 def stockPrices(request):
     ticker = request.query_params.get('ticker', None)
     period = request.query_params.get('period', None)
-    if not ticker or not period or period not in ['1w','1wk','3mo','1y','5y']:
+    if not ticker or not period or period not in ['1wk','3mo','1y','5y']:
         return Response({"detail":"Invalid ticker or period"}, status=status.HTTP_400_BAD_REQUEST)
     try:
         tickerData = yf.Ticker(ticker)
@@ -45,28 +45,28 @@ def stockPrices(request):
     Method for returning price data that takes the smallest interval given the period. Guaranteed to give back a result,
     but may give a granularity that isn't helpful (e.g. no need to see hourly data for over a year).
     """
-    intervals = ['1m','2m','5m','15m','30m','1h','5d','1wk','1mo','3mo']
-    for int in intervals:
-        try:
-            priceData = tickerData.history(interval=int,period=period)
-            if not len(priceData):
-                continue
-            else:
-                priceData.reset_index(inplace=True)
-                output = {"metadata":{"interval":int},"data":priceData.to_dict('records')}
-                return Response(output)
-        except:
-            continue
-    return Response({"detail":"Could not fetch data"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    # intervals = ['1m','2m','5m','15m','30m','1h','5d','1wk','1mo','3mo']
+    # for int in intervals:
+    #     try:
+    #         priceData = tickerData.history(interval=int,period=period)
+    #         if not len(priceData):
+    #             continue
+    #         else:
+    #             priceData.reset_index(inplace=True)
+    #             output = {"metadata":{"interval":int},"data":priceData.to_dict('records')}
+    #             return Response(output)
+    #     except:
+    #         continue
+    # return Response({"detail":"Could not fetch data"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     """
     Method for returning price data that fixes the interval to give about 300-600 data points.
     Fixed intervals per period may result in errors if for some reason some ticker doesn't have the granularity requested.
     """
-    # intervals = {'1w': '15m', '1wk': '1m', '3mo':'1h','1h':'1d','5y':'5d'}
-    # priceData = tickerData.history(period = period, interval = intervals[period])
-    # priceData.reset_index(inplace=True)
-    # output = {"metadata":{"interval":intervals[period]},"data":priceData.to_dict('records')}
-    # return Response(output)
+    intervals = {'1wk   ': '15m',  '3mo':'1h','1h':'1d','5y':'5d'}
+    priceData = tickerData.history(period = period, interval = intervals[period])
+    priceData.reset_index(inplace=True)
+    output = {"metadata":{"interval":intervals[period]},"data":priceData.to_dict('records')}
+    return Response(output)
 
     
 class LoginTokenPairView(TokenObtainPairView):
