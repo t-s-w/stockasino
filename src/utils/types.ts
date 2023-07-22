@@ -92,7 +92,6 @@ export class LoginError extends Error {
 
 export interface PriceHistoryMetadata {
   interval?: string;
-  labels: string[];
 }
 
 export interface PriceHistoryFetchResult {
@@ -126,16 +125,16 @@ export interface StockInfo {
   targetMeanPrice: number;
 }
 
-export type StockPriceDataPoint = [
-  Date,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number
-];
+export interface StockPriceDataPoint {
+  Datetime: Date;
+  Open: number;
+  High: number;
+  Low: number;
+  Close: number;
+  Volume: number;
+  Dividends: number;
+  "Stock Splits": number;
+}
 
 export interface StockInfoParser {
   name: string;

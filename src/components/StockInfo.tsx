@@ -74,7 +74,9 @@ export default function StockInfo(props: Props) {
           <StockSummary stockInfo={stockInfo} />
         </Tab>
         <Tab eventKey="graph" title="Graph">
-          <PriceHistoryGraph period={"1w"} />
+          <Container className="w-100" style={{ height: "500px" }}>
+            <PriceHistoryGraph period={"1wk"} />
+          </Container>
         </Tab>
       </Tabs>
     </>
