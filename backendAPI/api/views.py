@@ -49,7 +49,8 @@ def stockPrices(request):
                 continue
             else:
                 priceData.reset_index(inplace=True)
-                return Response(priceData.to_dict('records'))
+                output = {"metadata":{"interval":int},"data":priceData.to_dict('records')}
+                return Response(output)
         except:
             continue
     return Response({"detail":"Could not fetch data"},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
