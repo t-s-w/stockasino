@@ -1,6 +1,28 @@
 import React from "react";
 import StockHoldings from "./Holdings";
 
+// Auth related types
+
+export interface AuthContextType {
+  login: (credentials: LoginInfo) => Promise<void>;
+  logout: () => void;
+  signup: (signupInfo: {
+    username: string;
+    password: string;
+    email: string;
+  }) => Promise<void>;
+  setTokens: React.Dispatch<React.SetStateAction<TokenPair | null>>;
+  tokens: TokenPair | null;
+  user: User | null;
+  refresh: (refresh: string) => Promise<void>;
+  updateGame: () => void;
+  activeGame: Game | undefined;
+}
+
+export interface User {
+  username: string;
+}
+
 export interface LoginInfo {
   username: string;
   password: string;
@@ -15,6 +37,16 @@ export interface TokenPair {
   access: string;
   refresh: string;
 }
+
+export interface Token extends User {
+  token_type: string;
+  exp: number;
+  iat: number;
+  jti: string;
+  user_id: number;
+}
+
+// Fetch related types
 
 export interface FetchOptions {
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -58,6 +90,18 @@ export class LoginError extends Error {
   }
 }
 
+export interface PriceHistoryMetadata {
+  interval?: string;
+  labels: string[];
+}
+
+export interface PriceHistoryFetchResult {
+  metadata: PriceHistoryMetadata;
+  data: StockPriceDataPoint[];
+}
+
+// Model related types
+
 export interface StockInfo {
   previousClose: number;
   dayLow: number;
@@ -82,6 +126,17 @@ export interface StockInfo {
   targetMeanPrice: number;
 }
 
+export type StockPriceDataPoint = [
+  Date,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number
+];
+
 export interface StockInfoParser {
   name: string;
   condition: (stockInfo: StockInfo) => boolean;
@@ -97,34 +152,6 @@ export interface Game {
   user?: string | number;
   ended?: boolean;
   portfolio?: Record<string, StockHoldings>;
-}
-
-export interface User {
-  username: string;
-}
-
-export interface Token extends User {
-  token_type: string;
-  exp: number;
-  iat: number;
-  jti: string;
-  user_id: number;
-}
-
-export interface AuthContextType {
-  login: (credentials: LoginInfo) => Promise<void>;
-  logout: () => void;
-  signup: (signupInfo: {
-    username: string;
-    password: string;
-    email: string;
-  }) => Promise<void>;
-  setTokens: React.Dispatch<React.SetStateAction<TokenPair | null>>;
-  tokens: TokenPair | null;
-  user: User | null;
-  refresh: (refresh: string) => Promise<void>;
-  updateGame: () => void;
-  activeGame: Game | undefined;
 }
 
 export interface Transaction {
