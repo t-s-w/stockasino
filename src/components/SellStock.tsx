@@ -58,11 +58,11 @@ export default function SellStock(props: Props) {
   }
 
   useEffect(() => {
-    fetchHoldings();
+    void fetchHoldings();
   }, []);
 
   return holdings.qtyOwned <= 0 ? null : (
-    <Card body>
+    <Card body className="mb-2">
       <span className="fw-bold">Units owned: </span>
       <span>{holdings.qtyOwned}</span>
       <Form
