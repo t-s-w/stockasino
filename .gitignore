@@ -48,6 +48,9 @@ media
 # C extensions
 *.so
 
+# venv
+backendAPI/stockasino/
+
 # Distribution / packaging
 .Python
 build/
