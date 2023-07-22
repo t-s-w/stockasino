@@ -1,7 +1,7 @@
 from django.db import models
 import datetime
 from django.contrib.auth.models import User
-from .classes import GameSummary
+from .classes import GameSummary, StockHoldings
 
 def get_current_month():
     now = datetime.datetime.now()
@@ -36,7 +36,16 @@ class Game(models.Model):
     def summarize_holdings(self):
         transactions = Transaction.objects.filter(game=self)
         gameSummary = GameSummary(self,transactions)
-        return gameSummary.to_dict()
+        return gameSummary
+    
+    def get_holdings_of_one_stock(self,ticker):
+        transactions = Transaction.objects.filter(game=self, ticker=ticker.upper()).order_by("id")
+        holdings = StockHoldings(ticker.upper())
+        for txn in transactions:
+            holdings.addTransaction(txn)
+        return holdings
+
+
 
 
     

@@ -12,6 +12,7 @@ urlpatterns = [
     path('games/',views.GamesView.as_view()),
     path('transactions/',views.TransactionsView.as_view()),
     path('games/<int:gameId>/holdings', views.GameDetailView.as_view()),
+    path('myholdings', views.HoldingsOfOneStockView.as_view()),
     path('games/update', views.UpdateGameView.as_view()),
     path('search',views.searchView)
 ]

@@ -89,17 +89,30 @@ class TransactionsView(APIView):
             transaction = Transaction.objects.create(game=game, unitprice=price, ticker=request.data['ticker'], quantity=request.data['quantity'],type=request.data['type'])
             serializer = TransactionSerializer(transaction)
             game.update_balance()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class GameDetailView(APIView):
     def get(self, request, gameId,format=None):
-        # try:
+        try:
             game = Game.objects.get(id=gameId)
             print(game.summarize_holdings())
-            return Response(game.summarize_holdings())
-        # except:
-        #     return Response({"detail":"Failed to fetch game"},status=status.HTTP_400_BAD_REQUEST)
+            return Response(game.summarize_holdings().to_dict())
+        except:
+            return Response({"detail":"Failed to fetch game"},status=status.HTTP_400_BAD_REQUEST)
 
+@permission_classes([IsAuthenticated])
+class HoldingsOfOneStockView(APIView):
+    def get(self, request):
+        if not request.query_params["ticker"]:
+            return Response({"detail":"No ticker supplied"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            game = Game.objects.get(user=request.user,month=get_current_month())
+            if not request.user or not game or game.ended:
+                return Response({"detail":"No active game found for the current user!"},status=status.HTTP_401_UNAUTHORIZED)
+        except:
+            return Response ({"detail": "Failed to fetch game"},status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(game.get_holdings_of_one_stock(request.query_params["ticker"]).to_dict())
 
 @api_view(["GET"])
 def searchView(request):
