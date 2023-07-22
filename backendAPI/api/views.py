@@ -37,6 +37,7 @@ def stockPrices(request):
     if not ticker or not period or period not in ['1wk','3mo','1y','5y']:
         return Response({"detail":"Invalid ticker or period"}, status=status.HTTP_400_BAD_REQUEST)
     try:
+        ticker = ticker.replace('_','.')
         tickerData = yf.Ticker(ticker)
         tickerData.info
     except HTTPError:
