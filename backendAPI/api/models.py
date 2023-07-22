@@ -63,6 +63,5 @@ class Transaction(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        self.ticker = self.ticker and self.ticker.upper()
-        self.ticker.replace('_','.')
+        self.ticker = self.ticker and self.ticker.upper().replace('_','.')
         super(Transaction, self).save(*args, **kwargs)
