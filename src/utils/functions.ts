@@ -2,13 +2,16 @@ export function diff(a, b) {
   const diff = b - a;
   const pct = (b - a) / a;
   const diffFormatted = Number(
-    Math.round(diff.toString() + "e2").toString() + "e-2"
-  ).toFixed(2);
+    Math.round(diff.toLocaleString("en-sg") + "e2").toString() + "e-2"
+  );
   const pctDiff = Number(
-    Math.round(pct.toString() + "e4").toString() + "e-2"
-  ).toFixed(2);
-  const symbol = b - a < 0 ? "" : "+";
-  return { diff: symbol + diffFormatted, pctDiff: symbol + pctDiff + "%" };
+    Math.round(pct.toLocaleString("en-sg") + "e4").toString() + "e-2"
+  );
+  const symbol = diffFormatted < 0 ? "" : "+";
+  return {
+    diff: symbol + diffFormatted.toFixed(2),
+    pctDiff: symbol + pctDiff.toFixed(2) + "%",
+  };
 }
 
 export function getCurrentMonth() {

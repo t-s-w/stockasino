@@ -9,8 +9,15 @@ type Props = {
 
 function delta(a, b) {
   const diffs = diff(a, b);
+  const diffFormatted = Number(
+    Math.round((b - a).toLocaleString("en-sg") + "e2").toString() + "e-2"
+  );
   const colour =
-    b - a > 0 ? "var(--bs-success)" : b - a < 0 ? "var(--bs-danger)" : "";
+    diffFormatted > 0
+      ? "var(--bs-success)"
+      : diffFormatted < 0
+      ? "var(--bs-danger)"
+      : "";
   return (
     <span style={{ color: colour }}>{`${diffs.diff} (${diffs.pctDiff})`}</span>
   );
@@ -27,6 +34,7 @@ export default function Portfolio(props: Props) {
     if (stock.qtyOwned <= 0) continue;
     const holdingsValue = stock.currentPrice * stock.qtyOwned;
     const holdingsCost = stock.totalCost;
+    console.log(holdingsCost, holdingsValue, diff(holdingsCost, holdingsValue));
     elements.push(
       <Accordion.Item eventKey={ticker} key={ticker}>
         <Accordion.Header>
@@ -62,7 +70,9 @@ export default function Portfolio(props: Props) {
             </div>
             <Button
               className="w-auto"
-              onClick={() => navigate(`/viewticker/${ticker}`)}
+              onClick={() =>
+                navigate(`/viewticker/${ticker.replace(".", "_")}`)
+              }
             >
               View stock info
             </Button>
