@@ -104,11 +104,14 @@ class GamesView(APIView):
 @permission_classes([IsAuthenticated])
 class UpdateGameView(APIView):
     def get(self, request, format=None):
-        game = Game.objects.get(user=request.user,month=get_current_month())
-        if not game or game.ended:
+        try:
+            game = Game.objects.get(user=request.user,month=get_current_month())
+            game.update_balance()
+            return Response(GameSerializer(game).data)
+        except:
             return Response({"detail":"No active game found for the current user!"},status=status.HTTP_404_NOT_FOUND)
-        game.update_balance()
-        return Response(GameSerializer(game).data)
+        
+        
         
 @permission_classes([IsAuthenticated])
 class TransactionsView(APIView):

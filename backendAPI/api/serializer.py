@@ -15,11 +15,14 @@ def get_current_month():
 class LoginTokenPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
-        currentGame = Game.objects.get(user=user,month=get_current_month())
+        try:
+            currentGame = Game.objects.get(user=user,month=get_current_month())
+            currentGame.update_balance()
+        except:
+            pass
         token = super().get_token(user)
         token['username'] = user.username
-        if currentGame:
-            currentGame.update_balance()
+            
         return token
     
 class SignupSerializer(ModelSerializer):
