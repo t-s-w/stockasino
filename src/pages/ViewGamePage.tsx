@@ -15,7 +15,7 @@ export default function ViewGamePage() {
   async function fetchGameData() {
     try {
       setLoading(true);
-      const game = await sendRequest(APIURL + `games/${gameId}/details`);
+      const game = await sendRequest(APIURL + `games/${gameId}/holdings`);
       game.month = new Date(game.month);
       game.currentBalance = parseFloat(game.cash);
       setGameInfo(game as Game);
