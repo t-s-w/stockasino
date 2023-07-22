@@ -1,10 +1,10 @@
 import AuthContext from "../auth/AuthContext";
 import { useContext } from "react";
 import GameInfoButton from "./GameInfoButton";
-import { Nav, NavDropdown } from "react-bootstrap";
+import { Container, Nav, NavDropdown } from "react-bootstrap";
 
 export default function UserCard() {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <Nav variant="underline">
@@ -19,7 +19,11 @@ export default function UserCard() {
         }
         drop="down-centered"
       >
-        test
+        <Container className="w-100 d-flex justify-content-center">
+          <button className="btn btn-secondary" onClick={logout}>
+            Log out
+          </button>
+        </Container>
       </NavDropdown>
       <GameInfoButton />
     </Nav>

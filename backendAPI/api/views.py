@@ -62,9 +62,10 @@ def stockPrices(request):
     Method for returning price data that fixes the interval to give about 300-600 data points.
     Fixed intervals per period may result in errors if for some reason some ticker doesn't have the granularity requested.
     """
-    intervals = {'1wk   ': '15m',  '3mo':'1h','1h':'1d','5y':'5d'}
+    intervals = {'1wk': '15m',  '3mo':'1h','1y':'1d','5y':'5d'}
     priceData = tickerData.history(period = period, interval = intervals[period])
     priceData.reset_index(inplace=True)
+    priceData.rename(columns={"Date":"Datetime"}, inplace=True)
     output = {"metadata":{"interval":intervals[period]},"data":priceData.to_dict('records')}
     return Response(output)
 

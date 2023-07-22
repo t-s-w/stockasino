@@ -1,9 +1,9 @@
 import { diff } from "../utils/functions";
-import { Container, Row, Col, Tab, Tabs } from "react-bootstrap";
+import { Container, Row, Col, Tab, Tabs, Nav } from "react-bootstrap";
 import StockSummary from "./StockSummary";
 import { StockInfo as StockInformation } from "../utils/types";
 import AuthContext from "../auth/AuthContext";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import BuyStock from "./BuyStock";
 import SellStock from "./SellStock";
 import PriceHistoryGraph from "./PriceHistoryGraph";
@@ -15,6 +15,7 @@ type Props = {
 
 export default function StockInfo(props: Props) {
   const { activeGame } = useContext(AuthContext);
+  const [graphPeriod, setGraphPeriod] = useState("1wk");
 
   const { stockInfo, setLoading } = props;
   const fontColour =
@@ -73,9 +74,31 @@ export default function StockInfo(props: Props) {
         <Tab eventKey="summary" title="Summary">
           <StockSummary stockInfo={stockInfo} />
         </Tab>
-        <Tab eventKey="graph" title="Graph">
-          <Container className="w-100" style={{ height: "500px" }}>
-            <PriceHistoryGraph period={"1wk"} />
+        <Tab eventKey="graph" title="Price History">
+          <Container className="w-100 p-3" style={{ height: "500px" }}>
+            <Nav variant="pills" defaultActiveKey="1wk" className="mb-3">
+              <Nav.Item>
+                <Nav.Link eventKey="1wk" onClick={() => setGraphPeriod("1wk")}>
+                  1 week
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="3mo" onClick={() => setGraphPeriod("3mo")}>
+                  3 months
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="1y" onClick={() => setGraphPeriod("1y")}>
+                  1 year
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="5y" onClick={() => setGraphPeriod("5y")}>
+                  5 years
+                </Nav.Link>
+              </Nav.Item>
+            </Nav>
+            <PriceHistoryGraph period={graphPeriod} />
           </Container>
         </Tab>
       </Tabs>
