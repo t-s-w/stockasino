@@ -49,7 +49,7 @@ def stockPrices(request):
     for int in intervals:
         try:
             priceData = tickerData.history(interval=int,period=period)
-            if len(priceData) <= 1:
+            if not len(priceData):
                 continue
             else:
                 priceData.reset_index(inplace=True)
