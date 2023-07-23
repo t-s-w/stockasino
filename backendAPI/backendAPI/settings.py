@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-9wz9ti8slovfi543#(ybhyjb=tff!if#5ra&fj#3+w&&6*!z83
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -63,10 +63,7 @@ MIDDLEWARE = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-]
+CORS_ALLOWED_ORIGINS = [r"^https://\w+\.vercel\.app"]
 
 ROOT_URLCONF = 'backendAPI.urls'
 
