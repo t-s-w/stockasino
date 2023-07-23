@@ -24,6 +24,7 @@ export default function PriceHistoryGraph(props: Props) {
   const [priceData, setPriceData] = useState([] as StockPriceDataPoint[]);
 
   async function fetchPriceData() {
+    if (!slug) return;
     try {
       const data = (await sendRequest(
         APIURL + `tickers/pricehistory/?period=${period}&ticker=${slug}`
