@@ -10,3 +10,11 @@
 .ticker-longname:hover {
   color: #fff;
 }
+
+#searchBar:focus-within + .search-results {
+  display: block;
+}
+
+#searchBar:not(:focus-within) + .search-results {
+  display: none;
+}

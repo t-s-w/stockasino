@@ -61,6 +61,7 @@ export default function SearchBar() {
       >
         <input
           type="text"
+          id="searchBarInput"
           className="border-0 rounded"
           placeholder="Search for stocks..."
           value={query}
@@ -72,7 +73,7 @@ export default function SearchBar() {
         {query ? crossIcon : searchIcon}
       </div>
       {quotes && query ? (
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative" }} className="search-results">
           <div
             style={{ position: "absolute", top: "0", left: "0" }}
             className="bg-white  z-3 border border-2 rounded"
