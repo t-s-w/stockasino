@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { APIURL } from "../utils/constants";
 import { Link } from "react-router-dom";
 import "./SearchBar.css";
+import { Quote } from "../utils/types";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
-  const [quotes, setQuotes] = useState([]);
+  const [quotes, setQuotes] = useState([] as Quote[]);
 
   function handleChange(evt: React.ChangeEvent<HTMLInputElement>) {
     setQuery(evt.target.value);
@@ -45,8 +46,8 @@ export default function SearchBar() {
       const signal = controller.signal;
       fetch(APIURL + "search?q=" + query, { signal })
         .then((x) => x.json())
-        .then((x) => setQuotes(x))
-        .catch((err) => {});
+        .then((x: Quote[]) => setQuotes(x))
+        .catch(() => undefined);
 
       return () => controller.abort();
     } else {

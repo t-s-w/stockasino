@@ -5,15 +5,20 @@ import Loading from "../components/Loading";
 import sendRequest from "../utils/sendRequest";
 import { APIURL } from "../utils/constants";
 import StockInfo from "../components/StockInfo";
+import { StockInformation } from "../utils/types";
 
 export default function ViewTickerPage() {
   const { slug } = useParams();
   const [loading, setLoading] = useState(true);
-  const [stockInfo, setStockInfo] = useState(null);
+  const [stockInfo, setStockInfo] = useState(
+    undefined as StockInformation | undefined
+  );
 
   async function fetchTicker(slug: string) {
     try {
-      const stockinfo = await sendRequest(APIURL + "tickers/" + slug);
+      const stockinfo = (await sendRequest(
+        APIURL + "tickers/" + slug
+      )) as StockInformation;
       setStockInfo(stockinfo);
     } catch (err) {
       return;

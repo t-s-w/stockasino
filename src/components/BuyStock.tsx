@@ -4,7 +4,7 @@ import { APIURL } from "../utils/constants";
 import { useParams } from "react-router-dom";
 import sendRequest from "../utils/sendRequest";
 import AuthContext from "../auth/AuthContext";
-import { APIError } from "../utils/types";
+import { APIError, Transaction } from "../utils/types";
 
 type Props = {
   maxBuyable: number;
@@ -23,11 +23,11 @@ export default function BuyStock(props: Props) {
     evt.preventDefault();
     setLoading(true);
     try {
-      const response = await sendRequest(APIURL + "transactions/", "POST", {
+      const response = (await sendRequest(APIURL + "transactions/", "POST", {
         quantity: qty,
         ticker: slug,
         type: "BUY",
-      });
+      })) as Transaction;
       updateGame();
     } catch (err) {
       if (err instanceof APIError) {

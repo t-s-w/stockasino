@@ -1,6 +1,8 @@
 import { createContext, useState, useEffect } from "react";
+import { PropsWithChildren } from "react";
 import {
   APIError,
+  APIReturnGame,
   AuthContextType,
   LoginError,
   LoginInfo,
@@ -8,11 +10,13 @@ import {
   Token,
   TokenPair,
   User,
+  Game,
 } from "../utils/types";
 import { APIURL } from "../utils/constants";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import sendRequest from "../utils/sendRequest";
+import { parseGameInfo } from "../utils/functions";
 
 const AuthContext = createContext({} as AuthContextType);
 
@@ -21,7 +25,7 @@ export default AuthContext;
 function parseNull(jsonString: string | null) {
   if (!jsonString) return null;
   try {
-    return JSON.parse(jsonString);
+    return JSON.parse(jsonString) as object;
   } catch {
     return null;
   }
@@ -34,22 +38,24 @@ function parseUserInfo(accessToken: string) {
   return decoded as User;
 }
 
-export function AuthProvider({ children }) {
+export function AuthProvider({ children }: PropsWithChildren) {
   const navigate = useNavigate();
   const storage = localStorage.getItem("tokens");
   const storedTokens = parseNull(storage) as TokenPair | null;
   const [tokens, setTokens] = useState(storedTokens);
-  const decoded = storedTokens ? jwt_decode(storedTokens.access) : null;
+  const decoded = storedTokens
+    ? (jwt_decode(storedTokens.access) as Token)
+    : null;
   const [user, setUser] = useState(
     storedTokens?.access ? parseUserInfo(storedTokens.access) : null
   );
-  const [activeGame, setActiveGame] = useState();
+  const [activeGame, setActiveGame] = useState(undefined as Game | undefined);
   const expired = decoded?.exp
     ? decoded.exp * 1000 < new Date().valueOf()
     : false;
 
   useEffect(() => {
-    if (expired) {
+    if (expired && storedTokens) {
       try {
         refresh(storedTokens.refresh).catch(logout);
       } catch {
@@ -58,7 +64,7 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  function updateAuthStates(tokens: TokenPair, delay: number = 0) {
+  function updateAuthStates(tokens: TokenPair, delay = 0) {
     localStorage.setItem("tokens", JSON.stringify(tokens));
     setTokens(tokens);
     const parsedUser = parseUserInfo(tokens.access);
@@ -69,13 +75,12 @@ export function AuthProvider({ children }) {
   async function login(credentials: LoginInfo) {
     credentials.username = credentials.username.toLowerCase();
     try {
-      const responseJSON = await sendRequest(
+      const responseJSON = (await sendRequest(
         APIURL + "auth/login",
         "POST",
         credentials
-      );
-      const tokens = responseJSON as TokenPair;
-      updateAuthStates(tokens, 1500);
+      )) as TokenPair;
+      updateAuthStates(responseJSON, 1500);
     } catch (err) {
       if (err instanceof APIError) {
         throw new LoginError(err.body.detail);
@@ -85,11 +90,10 @@ export function AuthProvider({ children }) {
 
   async function refresh(refresh: string) {
     try {
-      const responseJSON = await sendRequest(APIURL + "auth/refresh", "POST", {
+      const responseJSON = (await sendRequest(APIURL + "auth/refresh", "POST", {
         refresh,
-      });
-      const tokens = responseJSON as TokenPair;
-      updateAuthStates(tokens);
+      })) as TokenPair;
+      updateAuthStates(responseJSON);
     } catch (err) {
       if (err instanceof APIError) {
         throw new Error(err.body.detail);
@@ -104,13 +108,12 @@ export function AuthProvider({ children }) {
   }) {
     signupInfo.username = signupInfo.username.toLowerCase();
     try {
-      const responseJSON = await sendRequest(
+      const responseJSON = (await sendRequest(
         APIURL + "auth/signup",
         "POST",
         signupInfo
-      );
-      const tokens = responseJSON as TokenPair;
-      updateAuthStates(tokens, 1000);
+      )) as TokenPair;
+      updateAuthStates(responseJSON, 1000);
     } catch (err) {
       if (err instanceof APIError) {
         throw new ModelError(err.status, err.body);
@@ -130,13 +133,7 @@ export function AuthProvider({ children }) {
   function updateGame() {
     try {
       sendRequest(APIURL + "games/update")
-        .then((x) =>
-          setActiveGame({
-            month: new Date(x.month),
-            currentBalance: parseFloat(x.currentBalance),
-            id: x.id,
-          })
-        )
+        .then((x: APIReturnGame) => setActiveGame(parseGameInfo(x)))
         .catch(console.log);
     } catch (err) {
       if (err instanceof APIError) {

@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
 import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import sendRequest from "../utils/sendRequest";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import StockHoldings from "../utils/Holdings";
-import { APIError } from "../utils/types";
+import { APIError, Transaction } from "../utils/types";
 import { APIURL } from "../utils/constants";
+import AuthContext from "../auth/AuthContext";
 
 type Props = {
   price: number;
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export default function SellStock(props: Props) {
+  const { updateGame } = useContext(AuthContext);
   const { slug } = useParams();
   const { price, setLoading } = props;
   const [error, setError] = useState("");
@@ -19,6 +21,7 @@ export default function SellStock(props: Props) {
 
   const [holdings, setHoldings] = useState({} as StockHoldings);
   async function fetchHoldings() {
+    if (!slug) return;
     try {
       const data = (await sendRequest(
         APIURL + "myholdings?ticker=" + slug
@@ -35,11 +38,11 @@ export default function SellStock(props: Props) {
     evt.preventDefault();
     setLoading(true);
     try {
-      const response = await sendRequest(APIURL + "transactions/", "POST", {
+      const response = (await sendRequest(APIURL + "transactions/", "POST", {
         quantity: qty,
         ticker: slug,
         type: "SELL",
-      });
+      })) as Transaction;
       updateGame();
     } catch (err) {
       if (err instanceof APIError) {

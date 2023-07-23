@@ -101,7 +101,7 @@ export interface PriceHistoryFetchResult {
 
 // Model related types
 
-export interface StockInfo {
+export interface StockInformation {
   previousClose: number;
   dayLow: number;
   dayHigh: number;
@@ -123,6 +123,8 @@ export interface StockInfo {
   currentPrice: number;
   exDividendDate: number;
   targetMeanPrice: number;
+  symbol: string;
+  longName: string;
 }
 
 export interface StockPriceDataPoint {
@@ -138,8 +140,8 @@ export interface StockPriceDataPoint {
 
 export interface StockInfoParser {
   name: string;
-  condition: (stockInfo: StockInfo) => boolean;
-  value: (stockInfo: StockInfo) => string;
+  condition: (stockInfo: StockInformation) => boolean;
+  value: (stockInfo: StockInformation) => string;
 }
 
 export interface APIReturnGame {
@@ -172,4 +174,16 @@ export interface Transaction {
   unitprice: number;
   created: Date;
   type: "NEW" | "BUY" | "SELL";
+}
+
+export interface Quote {
+  industry?: string;
+  exchDisp: string;
+  index: string;
+  symbol: string;
+  quoteType: string;
+  longname: string;
+  shortname: string;
+  exchange: string;
+  sector?: string;
 }

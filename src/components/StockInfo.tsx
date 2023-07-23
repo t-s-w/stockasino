@@ -1,7 +1,7 @@
 import { diff } from "../utils/functions";
 import { Container, Row, Col, Tab, Tabs, Nav } from "react-bootstrap";
 import StockSummary from "./StockSummary";
-import { StockInfo as StockInformation } from "../utils/types";
+import { StockInformation } from "../utils/types";
 import AuthContext from "../auth/AuthContext";
 import React, { useContext, useState } from "react";
 import BuyStock from "./BuyStock";

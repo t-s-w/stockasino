@@ -1,9 +1,9 @@
 import { Container } from "react-bootstrap";
 import { stockInfoParsers } from "../utils/constants";
-import { StockInfo } from "../utils/types";
+import { StockInformation } from "../utils/types";
 
 type PropType = {
-  stockInfo: StockInfo;
+  stockInfo: StockInformation;
 };
 
 export default function StockSummary(props: PropType) {
