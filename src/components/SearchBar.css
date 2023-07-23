@@ -18,3 +18,7 @@
 #search:focus-within .search-results {
   display: block;
 }
+
+#searchBar:focus-within {
+  box-shadow: 0 0 3px var(--bs-secondary);
+}
