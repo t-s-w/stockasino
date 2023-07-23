@@ -60,7 +60,7 @@ export default function SellStock(props: Props) {
     void fetchHoldings();
   }, [slug]);
 
-  return holdings.qtyOwned <= 0 ? null : (
+  return holdings.qtyOwned > 0 ? (
     <Card body className="mb-2">
       <span className="fw-bold">Units owned: </span>
       <span>{holdings.qtyOwned}</span>
@@ -112,5 +112,5 @@ export default function SellStock(props: Props) {
         </Row>
       </Form>
     </Card>
-  );
+  ) : null;
 }

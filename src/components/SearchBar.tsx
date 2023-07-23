@@ -82,6 +82,7 @@ export default function SearchBar() {
               <Link
                 key={quote.symbol}
                 to={"/viewticker/" + quote.symbol.replace(".", "_")}
+                onClick={() => setQuery("")}
                 className="search-result d-flex flex-row justify-content-between text-decoration-none p-2"
               >
                 <span className="fw-bold me-3">{quote.symbol}</span>
