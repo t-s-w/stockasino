@@ -1,0 +1,12 @@
+.search-result:hover {
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+
+.ticker-longname {
+  color: var(--bs-secondary);
+}
+
+.ticker-longname:hover {
+  color: #fff;
+}
