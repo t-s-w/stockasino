@@ -8,9 +8,9 @@ type Props = {
 
 export default function GameCard(props: Props) {
   const { game } = props;
-
+  console.log(game);
   return (
-    <Link to="/">
+    <Link to={`/games/${game.id}`}>
       <Card className="my-5" body>
         Month of{" "}
         {game.month.toLocaleDateString(undefined, {

@@ -1,3 +1,5 @@
+import { APIReturnGame } from "./types";
+
 export function diff(a, b) {
   const diff = b - a;
   const pct = (b - a) / a;
@@ -17,4 +19,13 @@ export function diff(a, b) {
 export function getCurrentMonth() {
   const date = new Date();
   return new Date(date.getFullYear(), date.getMonth());
+}
+
+export function parseGameInfo(game: APIReturnGame) {
+  const newGame = {
+    ...game,
+    month: new Date(game.month),
+    currentBalance: parseFloat(game.currentBalance),
+  };
+  return newGame;
 }

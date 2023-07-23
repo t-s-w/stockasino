@@ -63,7 +63,7 @@ MIDDLEWARE = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGIN_REGEXES = [r"^https://\w+\.vercel\.app$"]
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'backendAPI.urls'
 

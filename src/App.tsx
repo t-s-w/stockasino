@@ -20,8 +20,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/viewticker/:slug" element={<ViewTickerPage />} />
-          <Route path="/user/games" element={<UserGameListPage />} />
-          <Route path="/game/:gameId" element={<ViewGamePage />} />
+          <Route path="/user/history" element={<UserGameListPage />} />
+          <Route path="/games/:gameId" element={<ViewGamePage />} />
         </Routes>
       </Container>
     </AuthProvider>

@@ -11,7 +11,7 @@ export default function GameInfoButton() {
   return activeGame ? (
     <Nav.Item>
       <Nav.Link>
-        <Link to={`/game/` + activeGame.id}>
+        <Link to={`/games/` + activeGame.id.toString()}>
           <p className="mb-0">
             Round of{" "}
             {activeGame.month.toLocaleDateString(undefined, {

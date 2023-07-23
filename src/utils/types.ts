@@ -142,6 +142,16 @@ export interface StockInfoParser {
   value: (stockInfo: StockInfo) => string;
 }
 
+export interface APIReturnGame {
+  value?: number;
+  starting?: number;
+  month: string;
+  currentBalance: string;
+  id: number;
+  ended?: boolean;
+  portfolio?: Record<string, StockHoldings>;
+}
+
 export interface Game {
   value?: number;
   starting?: number;

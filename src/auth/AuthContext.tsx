@@ -39,11 +39,10 @@ export function AuthProvider({ children }) {
   const storage = localStorage.getItem("tokens");
   const storedTokens = parseNull(storage) as TokenPair | null;
   const [tokens, setTokens] = useState(storedTokens);
-  const decoded = storedTokens
-    ? (jwt_decode(storedTokens.access) as Token)
-    : null;
-  const userInfo = parseUserInfo(storedTokens?.access);
-  const [user, setUser] = useState(userInfo);
+  const decoded = storedTokens ? jwt_decode(storedTokens.access) : null;
+  const [user, setUser] = useState(
+    storedTokens?.access ? parseUserInfo(storedTokens.access) : null
+  );
   const [activeGame, setActiveGame] = useState();
   const expired = decoded?.exp
     ? decoded.exp * 1000 < new Date().valueOf()
@@ -125,18 +124,20 @@ export function AuthProvider({ children }) {
     setUser(null);
     setTokens(null);
     localStorage.removeItem("tokens");
-    navigate("/login");
+    navigate("/");
   }
 
   function updateGame() {
     try {
-      sendRequest(APIURL + "games/update").then((x) =>
-        setActiveGame({
-          month: new Date(x.month),
-          currentBalance: parseFloat(x.currentBalance),
-          id: x.id,
-        })
-      );
+      sendRequest(APIURL + "games/update")
+        .then((x) =>
+          setActiveGame({
+            month: new Date(x.month),
+            currentBalance: parseFloat(x.currentBalance),
+            id: x.id,
+          })
+        )
+        .catch(console.log);
     } catch (err) {
       if (err instanceof APIError) {
         throw new Error(err.body.detail);

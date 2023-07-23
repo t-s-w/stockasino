@@ -1,42 +1,33 @@
 import { Container } from "react-bootstrap";
 import PrivateRoute from "../auth/PrivateRoute";
 import { useContext, useEffect, useState } from "react";
-import { APIError, Game } from "../utils/types";
+import { APIError, APIReturnGame, Game } from "../utils/types";
 import sendRequest from "../utils/sendRequest";
 import Loading from "../components/Loading";
 import { APIURL } from "../utils/constants";
 import GameCard from "../components/GameCard";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../auth/AuthContext";
+import { parseGameInfo } from "../utils/functions";
 
 export default function UserGameListPage() {
   const { updateGame } = useContext(AuthContext);
   const [games, setGames] = useState([] as Game[]);
-  const [currentGame, setCurrentGame] = useState();
-  const [loading, setLoading] = useState(false);
+  const [currentGame, setCurrentGame] = useState(undefined as Game | undefined);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   async function getGames() {
     try {
-      const response = await sendRequest(APIURL + "games").then((x) =>
-        x.map(
-          (game) =>
-            ({
-              month: new Date(game.month),
-              currentBalance: parseFloat(game.currentBalance),
-            } as Game)
-        )
-      );
-      const findCurrentGame = response.find((game) => {
-        const now = new Date();
-        return (
-          game.month.getMonth() === now.getUTCMonth() &&
-          game.month.getUTCFullYear() === now.getUTCFullYear()
-        );
-      });
+      setLoading(true);
+      const response = (await sendRequest(APIURL + "games")) as APIReturnGame[];
+      const gameList = response.map(parseGameInfo);
+      const findCurrentGame = (await sendRequest(
+        APIURL + "games/update"
+      )) as APIReturnGame;
 
-      setCurrentGame(findCurrentGame);
-      setGames(response);
+      setCurrentGame(parseGameInfo(findCurrentGame));
+      setGames(gameList);
     } catch (err) {
       if (err instanceof APIError) {
         console.log(err.body);
