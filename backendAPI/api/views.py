@@ -71,8 +71,7 @@ def stockPrices(request):
     return Response(output)
 
 @api_view(["GET"])
-def stockNews(request):
-    ticker = request.query_params.get('ticker',None)
+def stockNews(request,ticker):
     if not ticker:
         return Response({"detail":"Missing ticker in query!"}, status=status.HTTP_400_BAD_REQUEST)
     try:

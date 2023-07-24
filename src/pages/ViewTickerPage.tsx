@@ -17,7 +17,7 @@ export default function ViewTickerPage() {
   async function fetchTicker(slug: string) {
     try {
       const stockinfo = (await sendRequest(
-        APIURL + "tickers/" + slug
+        APIURL + "tickers/info/" + slug
       )) as StockInformation;
       setStockInfo(stockinfo);
     } catch (err) {
