@@ -13,7 +13,7 @@ import {
   Game,
 } from "../utils/types";
 import { APIURL } from "../utils/constants";
-import jwt_decode from "jwt-decode";
+import jwt_decode, { JwtPayload } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import sendRequest from "../utils/sendRequest";
 import { parseGameInfo } from "../utils/functions";
@@ -44,7 +44,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const storedTokens = parseNull(storage) as TokenPair | null;
   const [tokens, setTokens] = useState(storedTokens);
   const decoded = storedTokens
-    ? (jwt_decode(storedTokens.access) as Token)
+    ? (jwt_decode<JwtPayload>(storedTokens.access) as Token)
     : null;
   const [user, setUser] = useState(
     storedTokens?.access ? parseUserInfo(storedTokens.access) : null
@@ -130,10 +130,17 @@ export function AuthProvider({ children }: PropsWithChildren) {
     navigate("/");
   }
 
+  async function fetchGameInfo() {
+    const response = (await sendRequest(
+      APIURL + "games/update"
+    )) as APIReturnGame;
+    return response;
+  }
+
   function updateGame() {
     try {
-      sendRequest(APIURL + "games/update")
-        .then((x: APIReturnGame) => {
+      fetchGameInfo()
+        .then(function (x) {
           setActiveGame(parseGameInfo(x));
         })
 
