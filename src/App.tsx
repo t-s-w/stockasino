@@ -10,6 +10,7 @@ import ViewTickerPage from "./pages/ViewTickerPage";
 import UserGameListPage from "./pages/UserGameListPage";
 import ViewGamePage from "./pages/ViewGamePage";
 import { ErrorAlertProvider } from "./contexts/ErrorAlertContext";
+import LeaderboardPage from "./pages/LeaderboardPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/viewticker/:slug" element={<ViewTickerPage />} />
             <Route path="/user/history" element={<UserGameListPage />} />
             <Route path="/games/:gameId" element={<ViewGamePage />} />
+            <Route path="/leaderboards/:YYYYMM" element={<LeaderboardPage />} />
           </Routes>
         </Container>
       </ErrorAlertProvider>

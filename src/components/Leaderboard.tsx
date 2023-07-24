@@ -49,11 +49,20 @@ export default function Leaderboard({ YYYYMM }: Props) {
     </div>
   ) : (
     <>
-      <h5>
-        For the month of{" "}
-        {month.toLocaleDateString("en-sg", { year: "numeric", month: "long" })}
-      </h5>
-      <LeaderboardEntries gameScores={gameScores} />
+      {gameScores.length > 0 ? (
+        <>
+          <h5>
+            For the month of{" "}
+            {month.toLocaleDateString("en-sg", {
+              year: "numeric",
+              month: "long",
+            })}
+          </h5>
+          <LeaderboardEntries gameScores={gameScores} />{" "}
+        </>
+      ) : (
+        <h5>No games found for the given month.</h5>
+      )}
     </>
   );
 }
