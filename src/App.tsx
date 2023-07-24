@@ -9,21 +9,24 @@ import { Container } from "react-bootstrap";
 import ViewTickerPage from "./pages/ViewTickerPage";
 import UserGameListPage from "./pages/UserGameListPage";
 import ViewGamePage from "./pages/ViewGamePage";
+import { ErrorAlertProvider } from "./contexts/ErrorAlertContext";
 
 function App() {
   return (
     <AuthProvider>
-      <NavBar />
-      <Container className="p-3 ">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/viewticker/:slug" element={<ViewTickerPage />} />
-          <Route path="/user/history" element={<UserGameListPage />} />
-          <Route path="/games/:gameId" element={<ViewGamePage />} />
-        </Routes>
-      </Container>
+      <ErrorAlertProvider>
+        <NavBar />
+        <Container className="p-3 ">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/viewticker/:slug" element={<ViewTickerPage />} />
+            <Route path="/user/history" element={<UserGameListPage />} />
+            <Route path="/games/:gameId" element={<ViewGamePage />} />
+          </Routes>
+        </Container>
+      </ErrorAlertProvider>
     </AuthProvider>
   );
 }
