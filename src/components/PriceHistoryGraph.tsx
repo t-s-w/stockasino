@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import sendRequest from "../utils/sendRequest";
 import { APIURL } from "../utils/constants";
 import { PriceHistoryFetchResult, StockPriceDataPoint } from "../utils/types";
@@ -13,6 +13,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
+import ErrorAlertContext from "../contexts/ErrorAlertContext";
 
 type Props = {
   period: string;
@@ -21,6 +22,7 @@ type Props = {
 export default function PriceHistoryGraph(props: Props) {
   const { period } = props;
   const { slug } = useParams();
+  const { errorAlert } = useContext(ErrorAlertContext);
   const [priceData, setPriceData] = useState([] as StockPriceDataPoint[]);
 
   async function fetchPriceData() {
@@ -35,7 +37,7 @@ export default function PriceHistoryGraph(props: Props) {
       setPriceData(data.data);
     } catch (err) {
       if (err instanceof APIError) {
-        console.log(err);
+        errorAlert(err.message);
       }
     }
   }
