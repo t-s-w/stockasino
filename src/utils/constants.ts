@@ -1,6 +1,6 @@
 import { StockInfoParser } from "./types";
 
-const APIURL = "http://localhost:8000/api/";
+const APIURL = import.meta.env.VITE_APIURL as string;
 
 function twoDp(num: number) {
   return Number(Math.round(num * 100).toString() + "e-2").toFixed(2);
