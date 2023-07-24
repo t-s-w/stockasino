@@ -6,6 +6,7 @@ import StockHoldings from "../utils/Holdings";
 import { APIError, Transaction } from "../utils/types";
 import { APIURL } from "../utils/constants";
 import AuthContext from "../auth/AuthContext";
+import ErrorAlertContext from "../contexts/ErrorAlertContext";
 
 type Props = {
   price: number;
@@ -14,6 +15,7 @@ type Props = {
 
 export default function SellStock(props: Props) {
   const { updateGame } = useContext(AuthContext);
+  const { errorAlert } = useContext(ErrorAlertContext);
   const { slug } = useParams();
   const { price, setLoading } = props;
   const [error, setError] = useState("");
@@ -29,7 +31,7 @@ export default function SellStock(props: Props) {
       setHoldings(data);
     } catch (err) {
       if (err instanceof APIError) {
-        setError(err.message);
+        errorAlert(err.message);
       }
     }
   }
@@ -46,9 +48,7 @@ export default function SellStock(props: Props) {
       updateGame();
     } catch (err) {
       if (err instanceof APIError) {
-        setError(err.message);
-      } else {
-        console.log(err);
+        errorAlert(err.message);
       }
     } finally {
       setLoading(false);

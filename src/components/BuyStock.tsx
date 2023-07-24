@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import sendRequest from "../utils/sendRequest";
 import AuthContext from "../auth/AuthContext";
 import { APIError, Transaction } from "../utils/types";
+import ErrorAlertContext from "../contexts/ErrorAlertContext";
 
 type Props = {
   maxBuyable: number;
@@ -16,6 +17,7 @@ export default function BuyStock(props: Props) {
   const { slug } = useParams();
   const [qty, setQty] = useState(1);
   const { maxBuyable, price, setLoading } = props;
+  const { errorAlert } = useContext(ErrorAlertContext);
   function handleChange(evt: React.ChangeEvent<HTMLInputElement>) {
     setQty(parseInt(evt.target.value));
   }
@@ -31,9 +33,7 @@ export default function BuyStock(props: Props) {
       updateGame();
     } catch (err) {
       if (err instanceof APIError) {
-        console.log(err.body);
-      } else {
-        console.log(err.message);
+        errorAlert(err.message);
       }
     } finally {
       setLoading(false);

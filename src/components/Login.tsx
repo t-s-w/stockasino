@@ -2,7 +2,7 @@ import { useContext } from "react";
 import AuthContext from "../auth/AuthContext";
 import { LoginError } from "../utils/types";
 import { useNavigate } from "react-router-dom";
-import { Col, Form, NavDropdown, Nav } from "react-bootstrap";
+import { Col, Form, NavDropdown, Nav, Alert } from "react-bootstrap";
 import { Formik } from "formik";
 import { useState } from "react";
 
@@ -56,7 +56,11 @@ export default function Login() {
                   <button className={"mt-4 btn " + buttonClass} type="submit">
                     {buttonText}
                   </button>
-                  <p style={{ color: "var(--bs-danger)" }}>{errorMsg}</p>
+                  {errorMsg && (
+                    <Alert variant="danger" className="mt-2">
+                      {errorMsg}
+                    </Alert>
+                  )}
                 </Col>
               </fieldset>
             </Form>

@@ -83,7 +83,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       updateAuthStates(responseJSON, 1500);
     } catch (err) {
       if (err instanceof APIError) {
-        throw new LoginError(err.body.detail);
+        throw new LoginError(err.message);
       }
     }
   }
@@ -96,7 +96,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       updateAuthStates(responseJSON);
     } catch (err) {
       if (err instanceof APIError) {
-        throw new Error(err.body.detail);
+        throw new Error(err.message);
       }
     }
   }
@@ -115,8 +115,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
       )) as TokenPair;
       updateAuthStates(responseJSON, 1000);
     } catch (err) {
-      if (err instanceof APIError) {
-        throw new ModelError(err.status, err.body);
+      if (err instanceof ModelError) {
+        throw err;
       } else {
         console.log(err);
       }
@@ -140,7 +140,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         .catch(() => setActiveGame(undefined));
     } catch (err) {
       if (err instanceof APIError) {
-        throw new Error(err.body.detail);
+        throw new Error(err.message);
       } else {
         console.log(err);
       }

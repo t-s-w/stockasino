@@ -1,6 +1,6 @@
 import { APIReturnGame } from "./types";
 
-export function diff(a, b) {
+export function diff(a: number, b: number) {
   const diff = b - a;
   const pct = (b - a) / a;
   const diffFormatted = Number(

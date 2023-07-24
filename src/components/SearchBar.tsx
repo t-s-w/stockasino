@@ -58,7 +58,7 @@ export default function SearchBar() {
     <div id="search">
       <div
         id="searchBar"
-        className="p-2 bg-white box-shadow rounded d-flex align-items-center focus-ring"
+        className="p-2 bg-white box-shadow rounded d-flex align-items-center focus-ring me-3"
       >
         <input
           type="text"
@@ -96,31 +96,5 @@ export default function SearchBar() {
         </div>
       ) : null}
     </div>
-    // <NavDropdown
-    //   id="searchBar"
-    //   className="mx-4"
-    //   title={
-    //     <input
-    //       type="text"
-    //       placeholder="Search for stocks..."
-    //       value={query}
-    //       onChange={handleChange}
-    //     />
-    //   }
-    // >
-    //   {query
-    //     ? quotes.map((quote) => (
-    //         <Dropdown.Item>
-    //           <Link
-    //             to={"/viewticker/" + quote.symbol.replace(".", "_")}
-    //             className="d-flex flex-row justify-content-between text-decoration-none"
-    //           >
-    //             <span className="fw-bold me-3">{quote.symbol}</span>
-    //             <span className="text-secondary">{quote.longname}</span>
-    //           </Link>
-    //         </Dropdown.Item>
-    //       ))
-    //     : null}
-    // </NavDropdown>
   );
 }

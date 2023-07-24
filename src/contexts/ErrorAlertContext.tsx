@@ -5,7 +5,7 @@ const ErrorAlertContext = createContext({} as ContextType);
 export default ErrorAlertContext;
 
 interface ContextType {
-  errorAlert?: (message: string) => void;
+  errorAlert: (message: string) => void;
 }
 
 export function ErrorAlertProvider({ children }: PropsWithChildren) {
