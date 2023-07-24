@@ -5,8 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function GameInfoButton() {
   const navigate = useNavigate();
-  const { activeGame, updateGame } = useContext(AuthContext);
-  useEffect(updateGame, []);
+  const { activeGame, updateGame, user } = useContext(AuthContext);
+  useEffect(updateGame, [user]);
 
   return activeGame ? (
     <Nav.Item>
@@ -33,7 +33,7 @@ export default function GameInfoButton() {
     </Nav.Item>
   ) : (
     <Nav.Item>
-      <Nav.Link onClick={() => navigate("/user/games")}>
+      <Nav.Link onClick={() => navigate("/user/history")}>
         No active game
       </Nav.Link>
     </Nav.Item>

@@ -133,8 +133,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
   function updateGame() {
     try {
       sendRequest(APIURL + "games/update")
-        .then((x: APIReturnGame) => setActiveGame(parseGameInfo(x)))
-        .catch(console.log);
+        .then((x: APIReturnGame) => {
+          setActiveGame(parseGameInfo(x));
+        })
+
+        .catch(() => setActiveGame(undefined));
     } catch (err) {
       if (err instanceof APIError) {
         throw new Error(err.body.detail);
