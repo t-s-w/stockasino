@@ -64,23 +64,23 @@ class GameSummary:
         self.user = str(game.user)
         self.month = str(game.month)
         self.ended = game.ended
-        self.cash = 0
+        self.currentBalance = 0
         self.portfolio = {}
         self.starting = 0
         for transaction in transactions:
             if transaction.type == "NEW":
-                self.cash += (transaction.unitprice)
+                self.currentBalance += (transaction.unitprice)
                 self.starting = transaction.unitprice
             else:
                 if transaction.ticker not in self.portfolio:
                     self.portfolio[transaction.ticker] = StockHoldings(transaction.ticker)
                 self.portfolio[transaction.ticker].addTransaction(transaction)
-                self.cash += (-1 if transaction.type == 'BUY' else 1) * transaction.quantity * (transaction.unitprice)
+                self.currentBalance += (-1 if transaction.type == 'BUY' else 1) * transaction.quantity * (transaction.unitprice)
         tickerlist = [ticker for ticker in self.portfolio]
         tickers = yf.Tickers(tickerlist)
         for ticker, holdings in self.portfolio.items():
             holdings.currentPrice = tickers.tickers[ticker.upper()].info['currentPrice']
-        value = self.cash
+        value = self.currentBalance
         for ticker, holdings in self.portfolio.items():
             value += Decimal(holdings.currentPrice * holdings.qtyOwned)
         self.value = value
@@ -92,7 +92,7 @@ class GameSummary:
             "starting": self.starting,
             "month": self.month,
             "ended": self.ended,
-            "cash": self.cash,
+            "currentBalance": self.currentBalance,
             "portfolio": {ticker: holdings.to_dict() for ticker,holdings in self.portfolio.items()},
             "value": self.value
         }

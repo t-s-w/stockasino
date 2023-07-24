@@ -64,8 +64,12 @@ export class ModelError extends Error {
   constructor(status: number, body: Record<string, string[]>) {
     let msg = undefined;
     for (const key in body) {
-      msg = body[key][0];
-      break;
+      try {
+        msg = body[key][0];
+        break;
+      } catch {
+        continue;
+      }
     }
     super(msg);
     this.body = body;
@@ -73,13 +77,17 @@ export class ModelError extends Error {
   }
 }
 
+export interface APIErrorJSON {
+  detail: string;
+}
+
+export type ModelErrorJSON = Record<string, string[]>;
+
 export class APIError extends Error {
   status: number;
-  body: Record<string, string | string[]>;
 
-  constructor(status: number, body: Record<string, string | string[]>) {
-    super();
-    this.body = body;
+  constructor(status: number, body: { detail: string }) {
+    super(body.detail);
     this.status = status;
   }
 }
@@ -152,9 +160,11 @@ export interface APIReturnGame {
   id: number;
   ended?: boolean;
   portfolio?: Record<string, StockHoldings>;
+  user: string;
 }
 
 export interface Game {
+  cash?: number;
   value?: number;
   starting?: number;
   month: Date;

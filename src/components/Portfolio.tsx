@@ -7,10 +7,11 @@ type Props = {
   gameInfo: Game;
 };
 
-function delta(a, b) {
+function delta(a: number, b: number) {
   const diffs = diff(a, b);
   const diffFormatted = Number(
-    Math.round((b - a).toLocaleString("en-sg") + "e2").toString() + "e-2"
+    Math.round(Number((b - a).toLocaleString("en-sg") + "e2")).toString() +
+      "e-2"
   );
   const colour =
     diffFormatted > 0
@@ -129,7 +130,9 @@ export default function Portfolio(props: Props) {
           </span>
           <br />
           <span className="text-end">
-            {delta(gameInfo.starting, gameInfo.value)}
+            {gameInfo.starting && gameInfo.value
+              ? delta(gameInfo.starting, gameInfo.value)
+              : null}
           </span>
         </p>
         <p className="mb-0 h6 text-end ms-auto">

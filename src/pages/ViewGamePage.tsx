@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import Loading from "../components/Loading";
 import { useParams } from "react-router-dom";
-import { APIError, Game } from "../utils/types";
+import { APIError, APIReturnGame, Game } from "../utils/types";
 import sendRequest from "../utils/sendRequest";
 import { APIURL } from "../utils/constants";
 import { Container } from "react-bootstrap";
 import Portfolio from "../components/Portfolio";
+import { parseGameInfo } from "../utils/functions";
 
 export default function ViewGamePage() {
   const { gameId } = useParams();
@@ -14,22 +15,23 @@ export default function ViewGamePage() {
   const [gameInfo, setGameInfo] = useState({} as Game);
   async function fetchGameData() {
     try {
+      if (!gameId) return;
       setLoading(true);
-      const game = await sendRequest(APIURL + `games/${gameId}/holdings`);
-      game.month = new Date(game.month);
-      game.currentBalance = parseFloat(game.cash);
-      setGameInfo(game as Game);
-      console.log(game);
+      const game = (await sendRequest(
+        APIURL + `games/${gameId}/holdings`
+      )) as APIReturnGame;
+      const parsedGame = parseGameInfo(game);
+      setGameInfo(parsedGame);
     } catch (err) {
       if (err instanceof APIError) {
-        setError(err.body.detail);
+        setError(err.message);
       }
     } finally {
       setLoading(false);
     }
   }
   useEffect(() => {
-    fetchGameData();
+    void fetchGameData();
   }, []);
 
   return (
@@ -37,7 +39,8 @@ export default function ViewGamePage() {
       {error ? (
         <h1>{error}</h1>
       ) : (
-        gameInfo && (
+        gameInfo &&
+        gameInfo.user && (
           <Container>
             <h1 className="mb-5">{`${
               gameInfo.user

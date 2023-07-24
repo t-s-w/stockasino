@@ -4,10 +4,10 @@ export function diff(a, b) {
   const diff = b - a;
   const pct = (b - a) / a;
   const diffFormatted = Number(
-    Math.round(diff.toLocaleString("en-sg") + "e2").toString() + "e-2"
+    Math.round(Number(diff.toLocaleString("en-sg") + "e2")).toString() + "e-2"
   );
   const pctDiff = Number(
-    Math.round(pct.toLocaleString("en-sg") + "e4").toString() + "e-2"
+    Math.round(Number(pct.toLocaleString("en-sg") + "e4")).toString() + "e-2"
   );
   const symbol = diffFormatted < 0 ? "" : "+";
   return {

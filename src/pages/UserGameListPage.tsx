@@ -30,8 +30,7 @@ export default function UserGameListPage() {
       setGames(gameList);
     } catch (err) {
       if (err instanceof APIError) {
-        console.log(err.body);
-        setError(APIError.body?.detail);
+        setError(err.message);
       }
     } finally {
       setLoading(false);
@@ -39,7 +38,7 @@ export default function UserGameListPage() {
   }
 
   useEffect(() => {
-    getGames();
+    void getGames();
   }, []);
 
   const pastGames = games.filter((game) => {
@@ -52,7 +51,10 @@ export default function UserGameListPage() {
 
   async function startGame() {
     try {
-      const response = await sendRequest(APIURL + "games/", "POST");
+      const response = (await sendRequest(
+        APIURL + "games/",
+        "POST"
+      )) as APIReturnGame;
       updateGame();
       navigate("/");
     } catch (err) {

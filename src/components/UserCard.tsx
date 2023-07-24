@@ -20,11 +20,6 @@ export default function UserCard() {
         }
         drop="down-centered"
       >
-        {/* <Container className="w-100 d-flex justify-content-center">
-          <button className="btn btn-secondary" onClick={logout}>
-            Log out
-          </button>
-        </Container> */}
         <NavDropdown.Item eventKey={"gamelist"}>
           <Link to="/user/history">History</Link>
         </NavDropdown.Item>

@@ -29,7 +29,7 @@ export default function SellStock(props: Props) {
       setHoldings(data);
     } catch (err) {
       if (err instanceof APIError) {
-        setError(err.body.detail);
+        setError(err.message);
       }
     }
   }

@@ -28,7 +28,8 @@ export default function ViewTickerPage() {
   }
 
   useEffect(() => {
-    fetchTicker(slug);
+    if (!slug) return;
+    fetchTicker(slug).catch(console.log);
   }, [slug]);
 
   return (

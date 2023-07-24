@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 export default function SignupPage() {
   const navigate = useNavigate();
   const { signup } = useContext(AuthContext);
-  const [successMsg, setSuccessMsg] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(null as null | string);
 
   const signupSchema = Yup.object({
     username: Yup.string()
@@ -32,6 +32,7 @@ export default function SignupPage() {
       "passwords-match",
       "Passwords must match",
       function (value) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         return !value || this.parent.password === value;
       }
     ),

@@ -13,7 +13,6 @@ export default function HomePage() {
       <Link to="" onClick={logout}>
         Log out
       </Link>
-      <button onClick={() => sendRequest(APIURL + "test")}>test</button>
     </>
   ) : null;
 }
