@@ -71,7 +71,6 @@ export default function SignupPage() {
       >
         {({
           errors,
-          touched,
           handleSubmit,
           handleChange,
           handleBlur,
