@@ -163,6 +163,19 @@ export interface APIReturnGame {
   user: string;
 }
 
+export interface StockNewsStory {
+  uuid: string;
+  title: string;
+  publisher: string;
+  link: string;
+  providerPublishTime: number;
+  type: string;
+  thumbnail: {
+    resolutions: { url: string; width: number; height: number; tag: string }[];
+  };
+  relatedTickers: string[];
+}
+
 export interface GameScore {
   id: number;
   user: string;

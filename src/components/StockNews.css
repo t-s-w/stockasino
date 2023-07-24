@@ -1,0 +1,7 @@
+.news > .news-story {
+  border-bottom: 1px solid #ddd;
+}
+
+.news > .news-story:last-child {
+  border-bottom: none;
+}

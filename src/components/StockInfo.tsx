@@ -7,6 +7,7 @@ import React, { useContext, useState } from "react";
 import BuyStock from "./BuyStock";
 import SellStock from "./SellStock";
 import PriceHistoryGraph from "./PriceHistoryGraph";
+import StockNews from "./StockNews";
 
 type Props = {
   stockInfo: StockInformation;
@@ -99,6 +100,11 @@ export default function StockInfo(props: Props) {
               </Nav.Item>
             </Nav>
             <PriceHistoryGraph period={graphPeriod} />
+          </Container>
+        </Tab>
+        <Tab eventKey="news" title="News">
+          <Container className="w-100 p-3">
+            <StockNews />
           </Container>
         </Tab>
       </Tabs>
