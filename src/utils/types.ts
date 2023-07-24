@@ -65,7 +65,7 @@ export class ModelError extends Error {
     let msg = undefined;
     for (const key in body) {
       try {
-        msg = body[key][0];
+        msg = key + ": " + body[key][0];
         break;
       } catch {
         continue;

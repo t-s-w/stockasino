@@ -40,7 +40,7 @@ export default function SignupPage() {
 
   return (
     <div className="w-50 mx-auto">
-      <h1 className="mb-5">Sign up</h1>
+      <h1 className="my-5">Sign up</h1>
       <Formik
         initialValues={{
           username: "",

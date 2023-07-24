@@ -10,7 +10,7 @@ export default function Login() {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [buttonText, setButtonText] = useState("Log in");
-  const [buttonClass, setButtonClass] = useState("btn-dark");
+  const [buttonClass, setButtonClass] = useState("btn-primary");
   const [errorMsg, setErrorMsg] = useState("");
   const [success, setSuccess] = useState(false);
 

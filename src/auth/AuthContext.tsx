@@ -84,6 +84,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
     } catch (err) {
       if (err instanceof APIError) {
         throw new LoginError(err.message);
+      } else if (err instanceof ModelError) {
+        throw new LoginError(err.message);
       }
     }
   }
