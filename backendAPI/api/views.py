@@ -180,3 +180,15 @@ def searchView(request):
     output = TickerSearchSerializer(data,many=True)
     return Response(output.data)
 
+@api_view(["GET"])
+def getLeaderboardView(request):
+    try:
+        yyyymm = request.query_params.get("yyyymm")
+        month = datetime.date(yyyymm[0:4],yyyymm[5:6])
+    except:
+        month = get_current_month()
+    games = Game.objects.filter(month=month, user__is_superuser=False)
+    summaries = [game.summarize_holdings().to_dict() for game in games]
+    output = [{key: summary[key] for key in ["id","user",'value']} for summary in summaries]
+    output.sort(key=lambda x: x['value'], reverse=True)
+    return Response(output)
