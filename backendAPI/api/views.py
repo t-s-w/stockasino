@@ -70,6 +70,20 @@ def stockPrices(request):
     output = {"metadata":{"interval":intervals[period]},"data":priceData.to_dict('records')}
     return Response(output)
 
+@api_view(["GET"])
+def stockNews(request):
+    ticker = request.query_params.get('ticker',None)
+    if not ticker:
+        return Response({"detail":"Missing ticker in query!"}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        ticker = ticker.replace('_','.')
+        tickerData = yf.Ticker(ticker)
+        news = tickerData.news
+        return Response(news)
+    except HTTPError:
+        return Response({"detail":"Invalid ticker"},status=status.HTTP_404_NOT_FOUND) 
+
+
     
 class LoginTokenPairView(TokenObtainPairView):
     serializer_class = LoginTokenPairSerializer
