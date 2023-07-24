@@ -163,6 +163,12 @@ export interface APIReturnGame {
   user: string;
 }
 
+export interface GameScore {
+  id: number;
+  user: string;
+  value: number;
+}
+
 export interface Game {
   cash?: number;
   value?: number;

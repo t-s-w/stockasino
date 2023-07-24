@@ -4,6 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import "./HomePage.css";
 import { Link } from "react-router-dom";
 import { getCurrentMonth } from "../utils/functions";
+import Leaderboard from "../components/Leaderboard";
 
 export default function HomePage() {
   const { user, logout } = useContext(AuthContext);
@@ -40,16 +41,9 @@ export default function HomePage() {
           </p>
         </div>
       </div>
-      <div>
-        <h2>Leaderboard</h2>
-        <h6>
-          For month of{" "}
-          {getCurrentMonth().toLocaleDateString("en-sg", {
-            year: "numeric",
-            month: "long",
-          })}
-        </h6>
-      </div>
+      <div></div>
+      <h2>Leaderboard</h2>
+      <Leaderboard />
     </Container>
   );
 }
