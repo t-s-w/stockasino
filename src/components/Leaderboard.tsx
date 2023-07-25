@@ -18,7 +18,7 @@ export default function Leaderboard({ YYYYMM }: Props) {
   const month = YYYYMM
     ? new Date(
         parseInt(YYYYMM.substring(0, 4)),
-        parseInt(YYYYMM.substring(4, 6))
+        parseInt(YYYYMM.substring(4, 6)) - 1
       )
     : getCurrentMonth();
   async function fetchLeaderboard(YYYYMM = undefined as undefined | string) {
@@ -61,7 +61,7 @@ export default function Leaderboard({ YYYYMM }: Props) {
           <LeaderboardEntries gameScores={gameScores} />{" "}
         </>
       ) : (
-        <h5>No games found for the given month.</h5>
+        <h5>No games found for the requested month. {":("}</h5>
       )}
     </>
   );

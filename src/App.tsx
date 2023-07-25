@@ -25,7 +25,10 @@ function App() {
             <Route path="/viewticker/:slug" element={<ViewTickerPage />} />
             <Route path="/user/history" element={<UserGameListPage />} />
             <Route path="/games/:gameId" element={<ViewGamePage />} />
-            <Route path="/leaderboards/:YYYYMM" element={<LeaderboardPage />} />
+            <Route
+              path="/leaderboards/:YYYYMM?"
+              element={<LeaderboardPage />}
+            />
           </Routes>
         </Container>
       </ErrorAlertProvider>

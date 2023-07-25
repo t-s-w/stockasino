@@ -18,7 +18,7 @@ export default function LeaderboardEntries({ gameScores }: Props) {
       </thead>
       <tbody>
         {gameScores.map((score, index) => (
-          <tr>
+          <tr key={score.user}>
             <td>{index + 1}</td>
             <td>
               <Link
