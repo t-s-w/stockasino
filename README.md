@@ -12,3 +12,27 @@ Stockasino is a project to showcase my ability to code full-stack projects from 
 
 - Front-end: **React.js** single-page website, coded in **Typescript** using **Bootstrap** framework.
 - Back-end: **Python** backend using the **Django** framework to serve as a RESTful API for the **PostgreSQL** database
+
+## Features
+
+### Comprehensive stock information
+
+<video src="./readmeassets/componentdiagram.png" autoplay loop>
+
+News related to tickers, price history graphs, and summary statistics retrieved from Yahoo! Finance API.
+
+## Data Model
+
+![datamodel](./readmeassets/datamodel.png)
+
+- User: Django comes with a built-in authentication system with its own User model.
+- Game: If users were allowed to play indefinitely, over time someone's score would get high enough that no one else can catch up. Stockasino addresses this problem by restricting progress to calendar months. A round for a user in a calendar month is called a Game.
+  - The Game model in Django was customised to have three additional methods:
+    - `update_balance` makes a Game retrieve all its related transactions and recalculate the current cash balance available to the player.
+    - `get_holdings_of_one_stock` makes a Game retrieve all its transactions with regard to one ticker and groups them, then calculates the units of stock held by the player (after buys and sells) then calculates their total cost on a first-in-first-out basis.
+    - `summarize_holdings` does the above for all stocks and returns a portfolio of the Game's current holdings along with the other Game details.
+- Transaction: Buys and Sells are all stored in the database as transactions which keep track of the price of the stock captured at the time of transaction, along with the quantity bought/sold.
+
+## React Component Hierarchy
+
+![components](./readmeassets/componentdiagram.png)
