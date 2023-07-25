@@ -58,7 +58,7 @@ export default function SearchBar() {
     <div id="search">
       <div
         id="searchBar"
-        className="p-2 box-shadow rounded d-flex align-items-center focus-ring me-3"
+        className="p-2 box-shadow rounded d-flex align-items-center focus-ring me-3 bg-dark"
       >
         <input
           type="text"
@@ -77,7 +77,7 @@ export default function SearchBar() {
         <div style={{ position: "relative" }} className="search-results">
           <div
             style={{ position: "absolute", top: "0", left: "0" }}
-            className="bg-dark-secondary z-3 border border-2 rounded"
+            className="bg-dark z-3 border border-2 rounded"
           >
             {quotes.map((quote) => (
               <Link

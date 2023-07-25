@@ -10,7 +10,7 @@ export default function NavBar() {
   const { user } = useContext(AuthContext);
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" className="bg-body-tertiary bg-gradient">
       <Container>
         <Navbar.Brand>
           <Link to="/">Stockasino!</Link>
