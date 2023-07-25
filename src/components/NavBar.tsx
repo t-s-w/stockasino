@@ -15,13 +15,14 @@ export default function NavBar() {
         <Navbar.Brand>
           <Link to="/">Stockasino!</Link>
         </Navbar.Brand>
+        <SearchBar />
+        <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav">
-          <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: "100px" }}
-            navbarScroll
-          ></Nav>
-          <SearchBar />
+          <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: "100px" }}>
+            <Nav.Link as={Link} to="/leaderboards">
+              Leaderboards
+            </Nav.Link>
+          </Nav>
           {user ? <UserCard /> : <Login />}
         </Navbar.Collapse>
       </Container>
