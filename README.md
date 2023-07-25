@@ -35,7 +35,7 @@ A portfolio page shows comprehensive information regarding transaction histories
 
 ### See how others are doing
 
-![leaderboards](./readmeassets/leaderboards.png)
+![leaderboards](./readmeassets/leaderboard.png)
 
 Leaderboards with the top players from each month let you learn from others' investment strategies.
 
