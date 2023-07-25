@@ -21,6 +21,20 @@ Stockasino is a project to showcase my ability to code full-stack projects from 
 
 News related to tickers, price history graphs, and summary statistics retrieved from Yahoo! Finance API.
 
+### Buy and sell stocks in real time
+
+![buysellstock](./readmeassets/buysellstock.png)
+
+Fetch the current price from stocks from Yahoo! FInance and buy and sell stocks using fake currency.
+
+### Watch your portfolio go up
+
+A portfolio page shows comprehensive information regarding transaction histories.
+
+### See how others are doing
+
+Leaderboards with the top players from each month let you learn from others' investment strategies.
+
 ## Data Model
 
 ![datamodel](./readmeassets/datamodel.png)
