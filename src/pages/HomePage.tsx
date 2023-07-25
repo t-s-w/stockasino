@@ -7,15 +7,8 @@ import { getCurrentMonth } from "../utils/functions";
 import Leaderboard from "../components/Leaderboard";
 
 export default function HomePage() {
-  const { user, logout } = useContext(AuthContext);
-  return user ? (
-    <>
-      <h1>Hello, {user.username}</h1>
-      <Link to="" onClick={logout}>
-        Log out
-      </Link>
-    </>
-  ) : (
+  // const { user, logout } = useContext(AuthContext);
+  return (
     <Container className="w-100">
       <div style={{ position: "relative" }}>
         <img src="/homepage-bg.jpg" width="100%" />
