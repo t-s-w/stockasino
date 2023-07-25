@@ -25,11 +25,15 @@ export default function BuyStock(props: Props) {
     evt.preventDefault();
     setLoading(true);
     try {
-      const response = (await sendRequest(APIURL + "transactions/", "POST", {
-        quantity: qty,
-        ticker: slug,
-        type: "BUY",
-      })) as Transaction;
+      const response = await sendRequest<Transaction>(
+        APIURL + "transactions/",
+        "POST",
+        {
+          quantity: qty,
+          ticker: slug,
+          type: "BUY",
+        }
+      );
       updateGame();
     } catch (err) {
       if (err instanceof APIError) {

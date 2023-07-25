@@ -75,11 +75,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
   async function login(credentials: LoginInfo) {
     credentials.username = credentials.username.toLowerCase();
     try {
-      const responseJSON = (await sendRequest(
+      const responseJSON = await sendRequest<TokenPair>(
         APIURL + "auth/login",
         "POST",
         credentials
-      )) as TokenPair;
+      );
       updateAuthStates(responseJSON, 1500);
     } catch (err) {
       if (err instanceof APIError) {
@@ -92,9 +92,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   async function refresh(refresh: string) {
     try {
-      const responseJSON = (await sendRequest(APIURL + "auth/refresh", "POST", {
-        refresh,
-      })) as TokenPair;
+      const responseJSON = await sendRequest<TokenPair>(
+        APIURL + "auth/refresh",
+        "POST",
+        {
+          refresh,
+        }
+      );
       updateAuthStates(responseJSON);
     } catch (err) {
       if (err instanceof APIError) {
@@ -110,11 +114,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }) {
     signupInfo.username = signupInfo.username.toLowerCase();
     try {
-      const responseJSON = (await sendRequest(
+      const responseJSON = await sendRequest<TokenPair>(
         APIURL + "auth/signup",
         "POST",
         signupInfo
-      )) as TokenPair;
+      );
       updateAuthStates(responseJSON, 1000);
     } catch (err) {
       if (err instanceof ModelError) {
@@ -133,9 +137,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }
 
   async function fetchGameInfo() {
-    const response = (await sendRequest(
-      APIURL + "games/update"
-    )) as APIReturnGame;
+    const response = await sendRequest<APIReturnGame>(APIURL + "games/update");
     return response;
   }
 

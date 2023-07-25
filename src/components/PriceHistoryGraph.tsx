@@ -28,9 +28,9 @@ export default function PriceHistoryGraph(props: Props) {
   async function fetchPriceData() {
     if (!slug) return;
     try {
-      const data = (await sendRequest(
+      const data = await sendRequest<PriceHistoryFetchResult>(
         APIURL + `tickers/pricehistory/?period=${period}&ticker=${slug}`
-      )) as PriceHistoryFetchResult;
+      );
       data.data.forEach((x) => {
         x.Datetime = new Date(x.Datetime);
       });

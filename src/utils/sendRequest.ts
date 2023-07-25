@@ -1,7 +1,7 @@
 import { APIError, ModelError, TokenPair } from "./types";
 import jwt_decode, { JwtPayload } from "jwt-decode";
 
-export default async function sendRequest(
+export default async function sendRequest<Type extends object = object>(
   url: string,
   method = "GET",
   payload: object | null = null
@@ -25,7 +25,7 @@ export default async function sendRequest(
     }
   }
   const res = await fetch(url, options);
-  const resBody = (await res.json()) as object;
+  const resBody = (await res.json()) as Type;
   if (res.ok) return resBody;
   if ("detail" in resBody && typeof resBody.detail === "string") {
     // @ts-expect-error: resBody.detail is expected to be "unknown" for some reason even though the above was asserted

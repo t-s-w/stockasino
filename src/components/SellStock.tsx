@@ -25,9 +25,9 @@ export default function SellStock(props: Props) {
   async function fetchHoldings() {
     if (!slug) return;
     try {
-      const data = (await sendRequest(
+      const data = await sendRequest<StockHoldings>(
         APIURL + "myholdings?ticker=" + slug
-      )) as StockHoldings;
+      );
       setHoldings(data);
     } catch (err) {
       if (err instanceof APIError) {
@@ -40,11 +40,15 @@ export default function SellStock(props: Props) {
     evt.preventDefault();
     setLoading(true);
     try {
-      const response = (await sendRequest(APIURL + "transactions/", "POST", {
-        quantity: qty,
-        ticker: slug,
-        type: "SELL",
-      })) as Transaction;
+      const response = await sendRequest<Transaction>(
+        APIURL + "transactions/",
+        "POST",
+        {
+          quantity: qty,
+          ticker: slug,
+          type: "SELL",
+        }
+      );
       updateGame();
     } catch (err) {
       if (err instanceof APIError) {

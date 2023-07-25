@@ -22,13 +22,11 @@ export default function UserGameListPage() {
   async function getGames() {
     try {
       setLoading(true);
-      const response = (await sendRequest(APIURL + "games")) as APIReturnGame[];
+      const response = await sendRequest<APIReturnGame[]>(APIURL + "games");
       const gameList = response.map(parseGameInfo);
-      const findCurrentGame = (await sendRequest(
-        APIURL + "games/update"
-      )) as APIReturnGame;
-
-      setCurrentGame(parseGameInfo(findCurrentGame));
+      sendRequest<APIReturnGame>(APIURL + "games/update")
+        .then((response) => setCurrentGame(parseGameInfo(response)))
+        .catch((err: any) => undefined);
       setGames(gameList);
     } catch (err) {
       if (err instanceof APIError) {
@@ -53,10 +51,10 @@ export default function UserGameListPage() {
 
   async function startGame() {
     try {
-      const response = (await sendRequest(
+      const response = await sendRequest<APIReturnGame>(
         APIURL + "games/",
         "POST"
-      )) as APIReturnGame;
+      );
       updateGame();
       navigate("/");
     } catch (err) {

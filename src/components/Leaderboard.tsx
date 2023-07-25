@@ -25,9 +25,9 @@ export default function Leaderboard({ YYYYMM }: Props) {
     try {
       setLoading(true);
       const query = YYYYMM ? `?yyyymm=${YYYYMM}` : "";
-      const response = (await sendRequest(
+      const response = await sendRequest<GameScore[]>(
         APIURL + "games/leaderboard" + query
-      )) as GameScore[];
+      );
       setGameScores(response);
     } catch (err) {
       if (err instanceof APIError) {

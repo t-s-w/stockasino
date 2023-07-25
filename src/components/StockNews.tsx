@@ -23,9 +23,9 @@ export default function StockNews() {
     }
     try {
       setLoading(true);
-      const response = (await sendRequest(
+      const response = await sendRequest<StockNewsStory[]>(
         APIURL + "tickers/news/" + slug
-      )) as StockNewsStory[];
+      );
       setNews(response);
     } catch (err) {
       if (err instanceof APIError) {
@@ -50,7 +50,7 @@ export default function StockNews() {
   ) : news.length > 0 ? (
     <Container className="news">
       {news.map((story) => {
-        const thumbnail = story.thumbnail.resolutions.find(
+        const thumbnail = story.thumbnail?.resolutions.find(
           (reso) => reso.tag === "140x140"
         );
 

@@ -17,9 +17,9 @@ export default function ViewGamePage() {
     try {
       if (!gameId) return;
       setLoading(true);
-      const game = (await sendRequest(
+      const game = await sendRequest<APIReturnGame>(
         APIURL + `games/${gameId}/holdings`
-      )) as APIReturnGame;
+      );
       const parsedGame = parseGameInfo(game);
       setGameInfo(parsedGame);
     } catch (err) {
