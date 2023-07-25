@@ -196,8 +196,8 @@ def searchView(request):
 @api_view(["GET"])
 def getLeaderboardView(request):
     try:
-        yyyymm = request.query_params.get("yyyymm")
-        month = datetime.date(yyyymm[0:4],yyyymm[5:6])
+        yyyymm = request.query_params.get("yyyymm", None)
+        month = datetime.date(int(yyyymm[0:4]),int(yyyymm[5:6]),1)
     except:
         month = get_current_month()
     games = Game.objects.filter(month=month, user__is_superuser=False)
