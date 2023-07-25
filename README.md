@@ -17,7 +17,7 @@ Stockasino is a project to showcase my ability to code full-stack projects from 
 
 ### Comprehensive stock information
 
-<video src="https://github.com/t-s-w/stockasino/assets/55447360/b8b3e3f7-1b0d-4565-a74f-eb7e19297cac" autoplay loop/>
+<video src="https://github.com/t-s-w/stockasino/assets/55447360/b8b3e3f7-1b0d-4565-a74f-eb7e19297cac" autoplay loop></video>
 
 News related to tickers, price history graphs, and summary statistics retrieved from Yahoo! Finance API.
 
@@ -29,7 +29,7 @@ Fetch the current price from stocks from Yahoo! FInance and buy and sell stocks 
 
 ### Watch your portfolio go up
 
-<video src="https://github.com/t-s-w/stockasino/assets/55447360/f40e2c7c-83cc-4144-9674-6a2ce82a0e77" autoplay loop />
+<video src="https://github.com/t-s-w/stockasino/assets/55447360/f40e2c7c-83cc-4144-9674-6a2ce82a0e77" autoplay loop ></video>
 
 A portfolio page shows comprehensive information regarding transaction histories.
 
