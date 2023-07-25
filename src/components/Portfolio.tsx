@@ -10,8 +10,7 @@ type Props = {
 function delta(a: number, b: number) {
   const diffs = diff(a, b);
   const diffFormatted = Number(
-    Math.round(Number((b - a).toLocaleString("en-sg") + "e2")).toString() +
-      "e-2"
+    Math.round(Number((b - a).toString() + "e2")).toString() + "e-2"
   );
   const colour =
     diffFormatted > 0

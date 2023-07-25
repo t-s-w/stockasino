@@ -17,7 +17,7 @@ Stockasino is a project to showcase my ability to code full-stack projects from 
 
 ### Comprehensive stock information
 
-<video src="./readmeassets/firefox_Tur4YyYD9N.mp4" autoplay loop>
+<video src="https://raw.githubusercontent.com/t-s-w/stockasino/main/readmeassets/firefox_Tur4YyYD9N.mp4" autoplay loop>
 
 News related to tickers, price history graphs, and summary statistics retrieved from Yahoo! Finance API.
 
