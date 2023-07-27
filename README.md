@@ -54,3 +54,7 @@ Leaderboards with the top players from each month let you learn from others' inv
 ## React Component Hierarchy
 
 ![components](./readmeassets/componentdiagram.png)
+
+## Possible Improvements: Icebox Items
+
+- Social functions: adding friends / permitting your games to only be visible to friends, profile pictures, etc.
