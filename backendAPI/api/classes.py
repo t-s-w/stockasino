@@ -1,8 +1,11 @@
 from collections import deque
 import yfinance as yf
 from decimal import Decimal
-import json
-from django.forms.models import model_to_dict
+import datetime
+
+def get_current_month():
+    now = datetime.datetime.now()
+    return datetime.date(now.year,now.month,1)
 
 class StockHoldings:
     def __init__(self,ticker):
@@ -72,6 +75,7 @@ class GameSummary:
                 self.currentBalance += (transaction.unitprice)
                 self.starting = transaction.unitprice
             else:
+                transaction.ticker = transaction.ticker.upper()
                 if transaction.ticker not in self.portfolio:
                     self.portfolio[transaction.ticker] = StockHoldings(transaction.ticker)
                 self.portfolio[transaction.ticker].addTransaction(transaction)
@@ -79,7 +83,14 @@ class GameSummary:
         tickerlist = [ticker for ticker in self.portfolio]
         tickers = yf.Tickers(tickerlist)
         for ticker, holdings in self.portfolio.items():
-            holdings.currentPrice = tickers.tickers[ticker.upper()].info['currentPrice']
+            if game.month == get_current_month():
+                holdings.currentPrice = tickers.tickers[ticker.upper()].info['currentPrice']
+            else:
+                startdate = '()-()-01'.format(game.month.year,game.month.month)
+                enddate = '()-()-01'.format(game.month.year, game.month.month + 1)
+                history = tickers.tickers[ticker.upper()].history(start = startdate,end=enddate)
+                holdings.currentPrice = history.iloc[-1].Close
+
         value = self.currentBalance
         for ticker, holdings in self.portfolio.items():
             value += Decimal(holdings.currentPrice * holdings.qtyOwned)
