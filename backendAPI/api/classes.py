@@ -86,8 +86,8 @@ class GameSummary:
             if game.month == get_current_month():
                 holdings.currentPrice = tickers.tickers[ticker.upper()].info['currentPrice']
             else:
-                startdate = '()-()-01'.format(game.month.year,game.month.month)
-                enddate = '()-()-01'.format(game.month.year, game.month.month + 1)
+                startdate = str(datetime.date(game.month.year,game.month.month,1))
+                enddate = str(datetime.date(game.month.year,game.month.month+1,1))
                 history = tickers.tickers[ticker.upper()].history(start = startdate,end=enddate)
                 holdings.currentPrice = history.iloc[-1].Close
 
